@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useTable, usePagination, useSortBy, useFilters, useRowSelect} from "react-table";
 import styles from "./Table.less"
 import {useDispatch} from "react-redux";
@@ -44,6 +44,13 @@ export const Table = ({columns, data}) => {
         }),
         []
     );
+
+    useEffect(()=>{
+        if (selectedFlatRows.length != 1) {
+            dispatch(isEdit(false));
+            dispatch(showModal(false));
+        }
+    })
 
     const {
         getTableProps,
