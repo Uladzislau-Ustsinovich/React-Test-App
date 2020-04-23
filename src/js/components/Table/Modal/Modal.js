@@ -14,9 +14,7 @@ export const Modal = ({row}) => {
     const isModalShow = useSelector(state => state.app.isModalShow);
     const isEdit = useSelector(state => state.app.isEdit);
 
-    useEffect(()=>{
-        if (!isEdit)
-            clearFields();
+    useEffect(() => {
         if (row && isEdit) {
             setId(row.id);
             setName(row.name);
@@ -24,14 +22,16 @@ export const Modal = ({row}) => {
             setWatchers(row.watchers);
             setStars(row.stargazers_count);
         }
-    }, [isEdit]);
+        if (!isEdit)
+        clearFields();
+    });
 
     const changeInputHandler = (event, handler) => {
         event.persist();
         handler(event.target.value);
     };
 
-    const clearFields = () =>{
+    const clearFields = () => {
         setId("");
         setName("");
         setForks("");
@@ -74,6 +74,12 @@ export const Modal = ({row}) => {
         setStars(localStorage.getItem('stargazers_count'));
     };
 
+    const closeHandler = () => {
+        clearFields();
+        dispatch(showModal(false));
+        dispatch(isEdit(false));
+    };
+
     return (
         <div>
             {isModalShow &&
@@ -113,7 +119,7 @@ export const Modal = ({row}) => {
                         <button className="modal__footer_btn" onClick={clearFields}>
                             Clear
                         </button>
-                        <button className="modal__footer_btn" onClick={() =>{clearFields(); dispatch(showModal(false));}}>
+                        <button className="modal__footer_btn" onClick={closeHandler}>
                             Close
                         </button>
                     </div>
