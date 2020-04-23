@@ -1,13 +1,12 @@
-import React, {useEffect, useState, useMemo} from 'react'
-import axios from 'axios'
+import React, {useEffect} from 'react'
 import {Table} from "./components/Table/Table";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMembers} from "./redux/action";
 
 function App() {
-    const dispatch = useDispatch()
-    const loading = useSelector(state => state.loading)
-    const data = useSelector(state => state.data)
+    const dispatch = useDispatch();
+    const loading = useSelector(state => state.app.loading);
+    const data = useSelector(state => state.data.data);
 
     useEffect(() => {
         dispatch(fetchMembers());
@@ -15,25 +14,16 @@ function App() {
 
     const columns = React.useMemo(
         () => [
-          //   {
-          //       Header: () => null,
-          //       id: 'expander',
-          //       Cell: ({ row }) => (
-          //           <span {...row.getToggleRowExpandedProps()}>
-          //   {row.isExpanded ? '👇' : '👉'}
-          // </span>
-          //       ),
-          //   },
             {
                 Header: 'Facebook repos',
                 columns: [
                     {
-                        Header: 'Name',
-                        accessor: 'name',
-                    },
-                    {
                         Header: 'Id',
                         accessor: 'id',
+                    },
+                    {
+                        Header: 'Name',
+                        accessor: 'name',
                     },
                     {
                         Header: 'Forks',

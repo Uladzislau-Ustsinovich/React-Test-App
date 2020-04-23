@@ -1,10 +1,12 @@
-import React from 'react'
-import {useTable, usePagination, useSortBy, useFilters} from "react-table";
+import React, {useState} from 'react'
+import {useTable, usePagination, useSortBy, useFilters, useRowSelect} from "react-table";
 import styles from "./Table.less"
-import {useSelector} from "react-redux";
+import {useDispatch} from "react-redux";
+import {deleteRows, dublicateRows, isEdit, showModal} from "../../redux/action";
+import {Modal} from "./Modal/Modal";
 
 function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter},}) {
-    const count = preFilteredRows.length
+    const count = preFilteredRows.length;
     return (
         <input
             value={filterValue || ''}
@@ -16,14 +18,32 @@ function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter},
     )
 }
 
-export const Table = ({columns, data}) => {
+const IndeterminateCheckbox = React.forwardRef(
+    ({indeterminate, ...rest}, ref) => {
+        const defaultRef = React.useRef()
+        const resolvedRef = ref || defaultRef;
 
+        React.useEffect(() => {
+            resolvedRef.current.indeterminate = indeterminate
+        }, [resolvedRef, indeterminate]);
+
+        return (
+            <>
+                <input type="checkbox" ref={resolvedRef} {...rest} />
+            </>
+        )
+    }
+);
+
+export const Table = ({columns, data}) => {
+    const dispatch = useDispatch();
+    const [selectedRow, editRow] = useState({});
     const defaultColumn = React.useMemo(
         () => ({
             Filter: DefaultColumnFilter,
         }),
         []
-    )
+    );
 
     const {
         getTableProps,
@@ -31,13 +51,14 @@ export const Table = ({columns, data}) => {
         headerGroups,
         prepareRow,
         page,
-
+        rows,
         canPreviousPage,
         canNextPage,
         pageOptions,
         nextPage,
         previousPage,
-        state: {pageIndex},
+        selectedFlatRows,
+        state: {pageIndex, selectedRowIds},
     } = useTable(
         {
             columns,
@@ -47,12 +68,66 @@ export const Table = ({columns, data}) => {
         },
         useFilters,
         useSortBy,
-        usePagination
-    )
+        usePagination,
+        useRowSelect,
+        hooks => {
+            hooks.visibleColumns.push(columns => [
+                {
+                    id: 'selection',
+                    Header: ({getToggleAllRowsSelectedProps}) => (
+                        <div>
+                            <IndeterminateCheckbox {...getToggleAllRowsSelectedProps()} />
+                        </div>
+                    ),
+                    Cell: ({row}) => (
+                        <div>
+                            <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
+                        </div>
+                    ),
+                },
+                ...columns,
+            ])
+        }
+    );
 
-    // Render the UI for your table
+    const dublicateHandler = () => {
+        const data = selectedFlatRows.map(d => d.original);
+        dispatch(dublicateRows(data));
+    };
+
+    const deleteHandler = () => {
+        const data = selectedFlatRows.map(d => d.original._id);
+        dispatch(deleteRows(data));
+    };
+
+    const copyHandler = () => {
+        for (let key in selectedFlatRows[0].original)
+            localStorage.setItem(key, selectedFlatRows[0].original[key]);
+    };
+
+    const addHandler = () => {
+        dispatch(showModal(true));
+        dispatch(isEdit(false));
+    };
+
+    const editHandler = () => {
+        dispatch(showModal(true));
+        dispatch(isEdit(true));
+        editRow(selectedFlatRows[0].original);
+    };
+
+
     return (
         <div>
+            <button onClick={dublicateHandler}>Dublicate</button>
+            <button onClick={deleteHandler}>Delete</button>
+            <button onClick={addHandler}>Add</button>
+            {selectedFlatRows.length === 1 &&
+            <>
+                <button onClick={copyHandler}>Copy</button>
+                <button onClick={editHandler}>Edit</button>
+            </>
+            }
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map(headerGroup => (
@@ -73,7 +148,7 @@ export const Table = ({columns, data}) => {
                 </thead>
                 <tbody {...getTableBodyProps()}>
                 {page.map((row, i) => {
-                    prepareRow(row)
+                    prepareRow(row);
                     return (
                         <tr {...row.getRowProps()}>
                             {row.cells.map(cell => {
@@ -84,6 +159,22 @@ export const Table = ({columns, data}) => {
                 })}
                 </tbody>
             </table>
+
+            <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
+            <pre>
+        <code>
+          {JSON.stringify(
+              {
+                  selectedRowIds: selectedRowIds,
+                  'selectedFlatRows[].original': selectedFlatRows.map(
+                      d => d.original
+                  ),
+              },
+              null,
+              2
+          )}
+        </code>
+      </pre>
 
             <div className="pagination">
                 <button onClick={() => previousPage()} disabled={!canPreviousPage}>
@@ -101,6 +192,7 @@ export const Table = ({columns, data}) => {
                 </button>
 
             </div>
+            <Modal row = {selectedRow}/>
         </div>
     )
-}
+};
