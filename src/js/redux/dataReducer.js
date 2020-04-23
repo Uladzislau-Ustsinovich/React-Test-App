@@ -29,8 +29,6 @@ export const dataReducer = (state = initialState, action) => {
         case EDIT: {
             let newDate = state.data.slice();
             newDate[state.data.findIndex(x => x._id === action.payload._id)] = action.payload;
-            // newDate.splice(index, 0, action.payload[ind]);
-            // newDate[index + 1]._id = ++id;
             return {...state, data: newDate};
         }
         case ADD:

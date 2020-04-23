@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addRow, showModal} from "../../../redux/action";
+import {addRow, editRow, showModal} from "../../../redux/action";
 
 
 export const Modal = ({row}) => {
@@ -39,10 +39,18 @@ export const Modal = ({row}) => {
         setStars("");
     };
 
-    const submitHandler = () => {
-        if (!id.trim() || !name.trim() || !forks.trim() || !watchers.trim() || !stars.trim()) {
+    const checkFields = () => {
+        debugger
+        if(isEdit) {
+            if ((id == "" || name == "" || forks == "" || watchers == "" || stars == "")) {
+                alert("Please Fill All Required Field");
+                return false
+            }
+        }
+        else
+        if ((!id.trim() || !name.trim() || !forks.trim() || !watchers.trim() || !stars.trim())) {
             alert("Please Fill All Required Field");
-            return
+            return false
         }
         if (isNaN(id) || isNaN(forks) || isNaN(watchers) || isNaN(stars)) {
             if (isNaN(id))
@@ -53,8 +61,13 @@ export const Modal = ({row}) => {
                 alert("watchers is should be a number");
             if (isNaN(stars))
                 alert("stars is should be a number");
-            return
+            return false
         }
+        return true
+    };
+
+    const submitHandler = () => {
+        if (!checkFields()) return;
         let data = {
             id: id,
             name: name,
@@ -64,6 +77,19 @@ export const Modal = ({row}) => {
         };
         clearFields();
         dispatch(addRow(data));
+    };
+
+    const editHandler = () => {
+        if (!checkFields()) return;
+        let data = {
+            _id: row._id,
+            id: id,
+            name: name,
+            forks: forks,
+            watchers: watchers,
+            stargazers_count: stars
+        };
+        dispatch(editRow(data));
     };
 
     const pasteHandler = () => {
@@ -104,7 +130,7 @@ export const Modal = ({row}) => {
                     </div>
                     <div className="modal__footer">
                         {isEdit &&
-                        <button className="modal__footer_btn" onClick={submitHandler}>
+                        <button className="modal__footer_btn" onClick={editHandler}>
                             Edit
                         </button>
                         }

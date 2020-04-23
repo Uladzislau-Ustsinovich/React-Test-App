@@ -2,6 +2,7 @@ import React, {useEffect} from 'react'
 import {Table} from "./components/Table/Table";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMembers} from "./redux/action";
+import Charts from "./components/Charts/Charts";
 
 function App() {
     const dispatch = useDispatch();
@@ -49,6 +50,7 @@ function App() {
     return (
         <div>
             <Table columns={columns} data={data}/>
+            {/*<Charts/>*/}
         </div>
     )
 }
