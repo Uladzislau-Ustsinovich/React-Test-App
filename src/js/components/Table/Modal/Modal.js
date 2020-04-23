@@ -24,7 +24,7 @@ export const Modal = ({row}) => {
         }
         if (!isEdit)
         clearFields();
-    });
+    }, [isEdit]);
 
     const changeInputHandler = (event, handler) => {
         event.persist();
