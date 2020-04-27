@@ -1,20 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App.js";
-import 'babel-polyfill';
-import {rootReducer} from "./redux/rootReducer";
-import {applyMiddleware, compose, createStore} from "redux";
-import thunk from "redux-thunk";
+import {store} from "./redux/rootReducer";
 import {Provider} from "react-redux";
-
-const store = createStore(rootReducer, compose(
-    applyMiddleware(thunk),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-))
-
+import {BrowserRouter} from "react-router-dom";
 
 ReactDOM.render(
-    <Provider store={store}>
-        <App/>
-    </Provider>,
+    <BrowserRouter>
+        <Provider store={store}>
+            <App/>
+        </Provider>
+    </BrowserRouter>,
     document.getElementById("root"));

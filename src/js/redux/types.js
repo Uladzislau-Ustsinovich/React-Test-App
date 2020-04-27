@@ -1,10 +1,9 @@
 export const FETCH_DATA = 'DATA/FETCH_DATA';
-export const SHOW_LOADER = 'APP/SHOW_LOADER';
-export const HIDE_LOADER = 'APP/HIDE_LOADER';
 export const DUBLICATE = 'DATA/DUBLICATE';
 export const DELETE = 'DATA/DELETE';
-export const SET_ID = 'DATA/SET_ID';
 export const SHOW_MODAL = 'APP/SHOW_MODAL';
 export const ADD = 'DATA/ADD';
 export const EDIT = 'DATA/EDIT';
 export const SHOW_EDIT = 'APP/SHOW_EDIT';
+
+//под обьекты

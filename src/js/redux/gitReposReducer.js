@@ -1,26 +1,25 @@
-import {ADD, DELETE, DUBLICATE, EDIT, FETCH_DATA, SET_ID} from "./types";
+import {ADD, DELETE, DUBLICATE, EDIT, FETCH_DATA} from "./types";
+import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
-    data: [],
-    _id: 0,
+    data: []
 }
 
-export const dataReducer = (state = initialState, action) => {
+export const gitReposReducer = (state = initialState, action) => {
     switch (action.type) {
         case DUBLICATE: {
             let newDate = JSON.parse(JSON.stringify(state.data));
-            let id = state._id;
-            for (let ind = 0; ind < action.payload.length; ind++) {
+            for (let ind = 0; ind < action.payload.length; ind++) { //получаем массив из вьюхи, поэтому надо сравнить весь массив с хранилищем
                 let index = newDate.findIndex(x => x._id === action.payload[ind]._id);
                 newDate.splice(index, 0, action.payload[ind]);
-                newDate[index + 1]._id = ++id;
+                newDate[index + 1]._id = uuidv4();
             }
-            return {...state, data: newDate, _id: id};
+            return {...state, data: newDate};
         }
         case DELETE:
             return {
                 ...state, data: state.data.filter((i) => {
-                    for (let ind = 0; ind < action.payload.length; ind++)
+                    for (let ind = 0; ind < action.payload.length; ind++) //получаем массив из вьюхи, поэтому надо сравнить весь массив с хранилищем
                         if (i._id === action.payload[ind])
                             return false;
                     return true;
@@ -31,11 +30,10 @@ export const dataReducer = (state = initialState, action) => {
             newDate[state.data.findIndex(x => x._id === action.payload._id)] = action.payload;
             return {...state, data: newDate};
         }
-        case ADD:
-            action.payload._id = ++state._id;
+        case ADD: {
+            action.payload._id = uuidv4();
             return {...state, data: state.data.concat(action.payload)};
-        case SET_ID:
-            return {...state, _id: action.payload};
+        }
         case FETCH_DATA:
             return {...state, data: action.payload};
         default:

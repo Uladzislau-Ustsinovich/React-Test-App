@@ -1,109 +1,68 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {addRow, editRow, showModal} from "../../../redux/action";
+import {checkFields} from "./validation";
+import {addRow, editRow, setEdit, showModal} from "../../../redux/action";
 
 
 export const Modal = ({row}) => {
     const dispatch = useDispatch();
-    const [id, setId] = useState('');
-    const [name, setName] = useState('');
-    const [forks, setForks] = useState('');
-    const [watchers, setWatchers] = useState('');
-    const [stars, setStars] = useState('');
+    const [rowBuffer, setBuffer] = useState({});
 
-    const isModalShow = useSelector(state => state.app.isModalShow);
-    const isEdit = useSelector(state => state.app.isEdit);
+    const isModalShow = useSelector(state => state.table.isModalShow);
+    const isEdit = useSelector(state => state.table.isEdit);
 
     useEffect(() => {
         if (row && isEdit) {
-            setId(row.id);
-            setName(row.name);
-            setForks(row.forks);
-            setWatchers(row.watchers);
-            setStars(row.stargazers_count);
+            pasteToRow(row);
         }
         if (!isEdit)
-        clearFields();
+            clearFields();
     }, [isEdit]);
 
-    const changeInputHandler = (event, handler) => {
-        event.persist();
-        handler(event.target.value);
+    const pasteToRow = (obj) => {
+        setBuffer({
+            _id: obj._id.toString(),
+            id: obj.id.toString(),
+            name: obj.name.toString(),
+            forks: obj.forks.toString(),
+            watchers: obj.watchers.toString(),
+            issues: obj.issues.toString()
+        });
+    };
+
+    const changeInputHandler = (event) => {
+        setBuffer({...rowBuffer, [event.target.name]: event.target.value});
     };
 
     const clearFields = () => {
-        setId("");
-        setName("");
-        setForks("");
-        setWatchers("");
-        setStars("");
-    };
-
-    const checkFields = () => {
-        debugger
-        if(isEdit) {
-            if ((id == "" || name == "" || forks == "" || watchers == "" || stars == "")) {
-                alert("Please Fill All Required Field");
-                return false
-            }
-        }
-        else
-        if ((!id.trim() || !name.trim() || !forks.trim() || !watchers.trim() || !stars.trim())) {
-            alert("Please Fill All Required Field");
-            return false
-        }
-        if (isNaN(id) || isNaN(forks) || isNaN(watchers) || isNaN(stars)) {
-            if (isNaN(id))
-                alert("id is should be a number");
-            if (isNaN(forks))
-                alert("forks is should be a number");
-            if (isNaN(watchers))
-                alert("watchers is should be a number");
-            if (isNaN(stars))
-                alert("stars is should be a number");
-            return false
-        }
-        return true
+        for (let key in rowBuffer)
+            setBuffer(prev => ({...prev, ...{[key]: ''}}));
     };
 
     const submitHandler = () => {
-        if (!checkFields()) return;
-        let data = {
-            id: id,
-            name: name,
-            forks: forks,
-            watchers: watchers,
-            stargazers_count: stars
-        };
+        console.log(rowBuffer)
+        if (!checkFields(rowBuffer)) return;
+        dispatch(addRow(rowBuffer));
         clearFields();
-        dispatch(addRow(data));
+        closeHandler();
     };
 
     const editHandler = () => {
-        if (!checkFields()) return;
-        let data = {
-            _id: row._id,
-            id: id,
-            name: name,
-            forks: forks,
-            watchers: watchers,
-            stargazers_count: stars
-        };
-        dispatch(editRow(data));
+        if (!checkFields(rowBuffer)) return;
+        dispatch(editRow(rowBuffer));
+        closeHandler();
     };
 
+
     const pasteHandler = () => {
-        setId(localStorage.getItem('id'));
-        setName(localStorage.getItem('name'));
-        setForks(localStorage.getItem('forks'));
-        setWatchers(localStorage.getItem('watchers'));
-        setStars(localStorage.getItem('stargazers_count'));
+        let obj = JSON.parse(localStorage.getItem("copy"));
+        pasteToRow(obj);
     };
 
     const closeHandler = () => {
         clearFields();
         dispatch(showModal(false));
-        dispatch(isEdit(false));
+        dispatch(setEdit(false));
     };
 
     return (
@@ -117,16 +76,16 @@ export const Modal = ({row}) => {
                         </h3>
                     </div>
                     <div className="modal__body">
-                        <input type="text" placeholder="id" name="id" value={id}
-                               onChange={(e) => changeInputHandler(e, setId)}/>
-                        <input type="text" placeholder="name" name="name" value={name}
-                               onChange={(e) => changeInputHandler(e, setName)}/>
-                        <input type="text" placeholder="forks" name="forks" value={forks}
-                               onChange={(e) => changeInputHandler(e, setForks)}/>
-                        <input type="text" placeholder="watchers" name="watchers" value={watchers}
-                               onChange={(e) => changeInputHandler(e, setWatchers)}/>
-                        <input type="text" placeholder="stars" name="stars" value={stars}
-                               onChange={(e) => changeInputHandler(e, setStars)}/>
+                        <input type="text" placeholder="id" name="id" value={rowBuffer.id}
+                               onChange={(e) => changeInputHandler(e)}/>
+                        <input type="text" placeholder="name" name="name" value={rowBuffer.name}
+                               onChange={(e) => changeInputHandler(e)}/>
+                        <input type="text" placeholder="forks" name="forks" value={rowBuffer.forks}
+                               onChange={(e) => changeInputHandler(e)}/>
+                        <input type="text" placeholder="watchers" name="watchers" value={rowBuffer.watchers}
+                               onChange={(e) => changeInputHandler(e)}/>
+                        <input type="text" placeholder="issues" name="issues" value={rowBuffer.issues}
+                               onChange={(e) => changeInputHandler(e)}/>
                     </div>
                     <div className="modal__footer">
                         {isEdit &&

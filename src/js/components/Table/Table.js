@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import {useTable, usePagination, useSortBy, useFilters, useRowSelect} from "react-table";
 import styles from "./Table.less"
-import {useDispatch} from "react-redux";
-import {deleteRows, dublicateRows, isEdit, showModal} from "../../redux/action";
+import {useDispatch, useSelector} from "react-redux";
+import {deleteRows, dublicateRows, fetchMembers, setEdit, showModal} from "../../redux/action";
 import {Modal} from "./Modal/Modal";
+import {columns} from "./TableColumnsTitles";
 
 function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter},}) {
     const count = preFilteredRows.length;
@@ -17,6 +18,7 @@ function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter},
         />
     )
 }
+
 
 const IndeterminateCheckbox = React.forwardRef(
     ({indeterminate, ...rest}, ref) => {
@@ -35,22 +37,33 @@ const IndeterminateCheckbox = React.forwardRef(
     }
 );
 
-export const Table = ({columns, data}) => {
+export const Table = () => {
     const dispatch = useDispatch();
     const [selectedRow, editRow] = useState({});
+    const [isLoading, setLoading] = useState(false);
+
+    const data = useSelector(state => state.gitRepos.data);
+
     const defaultColumn = React.useMemo(
         () => ({
             Filter: DefaultColumnFilter,
         }),
         []
     );
-
     useEffect(()=>{
-        if (selectedFlatRows.length != 1) {
-            dispatch(isEdit(false));
-            dispatch(showModal(false));
+        if(!data.length) {
+            setLoading(true);
+            dispatch(fetchMembers());
+            setLoading(false);
         }
-    })
+    },[]);
+
+    // useEffect(()=>{
+    //     if (selectedFlatRows.length != 1) {
+    //         dispatch(setEdit(false));
+    //         dispatch(showModal(false));
+    //     }
+    // });
 
     const {
         getTableProps,
@@ -108,21 +121,23 @@ export const Table = ({columns, data}) => {
     };
 
     const copyHandler = () => {
-        for (let key in selectedFlatRows[0].original)
-            localStorage.setItem(key, selectedFlatRows[0].original[key]);
+            localStorage.setItem("copy", JSON.stringify(selectedFlatRows[0].original));
     };
 
     const addHandler = () => {
         dispatch(showModal(true));
-        dispatch(isEdit(false));
+        dispatch(setEdit(false));
     };
 
     const editHandler = () => {
         dispatch(showModal(true));
-        dispatch(isEdit(true));
+        dispatch(setEdit(true));
         editRow(selectedFlatRows[0].original);
     };
 
+    if (isLoading) {
+        return <h2>Loading</h2>
+    }
 
     return (
         <div>
