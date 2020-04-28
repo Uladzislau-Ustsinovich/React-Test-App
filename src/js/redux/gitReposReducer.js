@@ -2,7 +2,8 @@ import {ADD, DELETE, DUBLICATE, EDIT, FETCH_DATA} from "./types";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
-    data: []
+    data: [],
+    editRow: {}
 }
 
 export const gitReposReducer = (state = initialState, action) => {

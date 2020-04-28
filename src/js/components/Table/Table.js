@@ -1,45 +1,18 @@
 import React, {useState, useEffect} from 'react'
-import {useTable, usePagination, useSortBy, useFilters, useRowSelect} from "react-table";
 import styles from "./Table.less"
 import {useDispatch, useSelector} from "react-redux";
-import {deleteRows, dublicateRows, fetchMembers, setEdit, showModal} from "../../redux/action";
+import {fetchMembers} from "../../redux/action";
 import {Modal} from "./Modal/Modal";
 import {columns} from "./TableColumnsTitles";
-
-function DefaultColumnFilter({column: {filterValue, preFilteredRows, setFilter},}) {
-    const count = preFilteredRows.length;
-    return (
-        <input
-            value={filterValue || ''}
-            onChange={e => {
-                setFilter(e.target.value || undefined)
-            }}
-            placeholder={`Search ${count} records...`}
-        />
-    )
-}
+import {DefaultColumnFilter, IndeterminateCheckbox} from "./TableService";
+import {TableButtons} from "./TableButtons/TableButtons";
+import {useFilters, usePagination, useRowSelect, useSortBy, useTable} from "react-table";
 
 
-const IndeterminateCheckbox = React.forwardRef(
-    ({indeterminate, ...rest}, ref) => {
-        const defaultRef = React.useRef()
-        const resolvedRef = ref || defaultRef;
-
-        React.useEffect(() => {
-            resolvedRef.current.indeterminate = indeterminate
-        }, [resolvedRef, indeterminate]);
-
-        return (
-            <>
-                <input type="checkbox" ref={resolvedRef} {...rest} />
-            </>
-        )
-    }
-);
 
 export const Table = () => {
     const dispatch = useDispatch();
-    const [selectedRow, editRow] = useState({});
+    const [selectedRow, setSelectedRow] = useState({});
     const [isLoading, setLoading] = useState(false);
 
     const data = useSelector(state => state.gitRepos.data);
@@ -110,30 +83,7 @@ export const Table = () => {
         }
     );
 
-    const dublicateHandler = () => {
-        const data = selectedFlatRows.map(d => d.original);
-        dispatch(dublicateRows(data));
-    };
 
-    const deleteHandler = () => {
-        const data = selectedFlatRows.map(d => d.original._id);
-        dispatch(deleteRows(data));
-    };
-
-    const copyHandler = () => {
-            localStorage.setItem("copy", JSON.stringify(selectedFlatRows[0].original));
-    };
-
-    const addHandler = () => {
-        dispatch(showModal(true));
-        dispatch(setEdit(false));
-    };
-
-    const editHandler = () => {
-        dispatch(showModal(true));
-        dispatch(setEdit(true));
-        editRow(selectedFlatRows[0].original);
-    };
 
     if (isLoading) {
         return <h2>Loading</h2>
@@ -141,15 +91,12 @@ export const Table = () => {
 
     return (
         <div>
-            <button onClick={dublicateHandler}>Dublicate</button>
-            <button onClick={deleteHandler}>Delete</button>
-            <button onClick={addHandler}>Add</button>
-            {selectedFlatRows.length === 1 &&
-            <>
-                <button onClick={copyHandler}>Copy</button>
-                <button onClick={editHandler}>Edit</button>
-            </>
-            }
+
+            <TableButtons
+                selectedFlatRows={selectedFlatRows}
+                setSelectedRow={setSelectedRow}
+            />
+
             <table {...getTableProps()}>
                 <thead>
                 {headerGroups.map(headerGroup => (
@@ -199,21 +146,21 @@ export const Table = () => {
       </pre>
 
             <div className="pagination">
-                <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                    {'<'}
-                </button>
+            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+                {'<'}
+            </button>
 
-                <span>
+            <span>
                     <strong>
                         {pageIndex + 1} of {pageOptions.length}
                     </strong>{' '}
                 </span>
 
-                <button onClick={() => nextPage()} disabled={!canNextPage}>
-                    {'>'}
-                </button>
+            <button onClick={() => nextPage()} disabled={!canNextPage}>
+                {'>'}
+            </button>
+        </div>
 
-            </div>
             <Modal row = {selectedRow}/>
         </div>
     )

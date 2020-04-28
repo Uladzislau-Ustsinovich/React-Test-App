@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkFields} from "./validation";
 import {addRow, editRow, setEdit, showModal} from "../../../redux/action";
+import {ModalInputFields} from "./ModalInputFields/ModalInputFields";
 
 
 export const Modal = ({row}) => {
@@ -12,11 +13,10 @@ export const Modal = ({row}) => {
     const isEdit = useSelector(state => state.table.isEdit);
 
     useEffect(() => {
+        clearFields();
         if (row && isEdit) {
             pasteToRow(row);
         }
-        if (!isEdit)
-            clearFields();
     }, [isEdit]);
 
     const pasteToRow = (obj) => {
@@ -75,18 +75,10 @@ export const Modal = ({row}) => {
 
                         </h3>
                     </div>
-                    <div className="modal__body">
-                        <input type="text" placeholder="id" name="id" value={rowBuffer.id}
-                               onChange={(e) => changeInputHandler(e)}/>
-                        <input type="text" placeholder="name" name="name" value={rowBuffer.name}
-                               onChange={(e) => changeInputHandler(e)}/>
-                        <input type="text" placeholder="forks" name="forks" value={rowBuffer.forks}
-                               onChange={(e) => changeInputHandler(e)}/>
-                        <input type="text" placeholder="watchers" name="watchers" value={rowBuffer.watchers}
-                               onChange={(e) => changeInputHandler(e)}/>
-                        <input type="text" placeholder="issues" name="issues" value={rowBuffer.issues}
-                               onChange={(e) => changeInputHandler(e)}/>
-                    </div>
+                    <ModalInputFields
+                        changeInputHandler={changeInputHandler}
+                        rowBuffer={rowBuffer}
+                    />
                     <div className="modal__footer">
                         {isEdit &&
                         <button className="modal__footer_btn" onClick={editHandler}>

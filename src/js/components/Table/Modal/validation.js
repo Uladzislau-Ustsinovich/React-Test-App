@@ -1,23 +1,24 @@
+const numberFields = ['id', 'forks', 'watchers', 'issues'];
+const countOfFields = 5;
 
-export const checkFields = ({id, name, forks, watchers, issues}) => {
-    if (id in window || name in window || forks in window || watchers in window || issues in window) {
+export const checkFields = (props) => {
+    let count = 0;  //проверяем, чтоб на выходе было проверенно нужное количество полей
+    for (let key in props) {
+        count++;
+        if (!props[key].trim()) {
+            alert("Please Fill All Required Field");
+            return false;
+        }
+        if (numberFields.find(item => item === key))
+            if (isNaN(props[key])) {
+                alert(`${key} is should be a number`);
+                return false;
+            }
+    }
+    console.log(count)
+    if (count-1 === countOfFields) //поле _id тоже входит в остав объекта
+        return true;
+    else
         alert("Please Fill All Required Field");
-        return false
-    }
-    if (!id.trim() || !name.trim() || !forks.trim() || !watchers.trim() || !issues.trim()) {
-        alert("Please Fill All Required Field");
-        return false
-    }
-    if (isNaN(id) || isNaN(forks) || isNaN(watchers) || isNaN(issues)) {
-        if (isNaN(id))
-            alert("id is should be a number");
-        if (isNaN(forks))
-            alert("forks is should be a number");
-        if (isNaN(watchers))
-            alert("watchers is should be a number");
-        if (isNaN(issues))
-            alert("issues is should be a number");
-        return false
-    }
-    return true
+    return false;
 };

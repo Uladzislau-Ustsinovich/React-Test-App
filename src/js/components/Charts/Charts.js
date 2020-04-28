@@ -1,20 +1,10 @@
 import * as React from 'react';
-import Paper from '@material-ui/core/Paper';
-import {
-    Chart,
-    BarSeries,
-    Title,
-    ArgumentAxis,
-    ValueAxis,
-    Tooltip,
-} from '@devexpress/dx-react-chart-material-ui';
-
-import {Animation, EventTracker} from '@devexpress/dx-react-chart';
 import {useDispatch, useSelector} from "react-redux";
 import {useEffect} from "react";
 import {fetchMembers} from "../../redux/action";
 import {useState} from "react";
 import {useRef} from "react";
+import {ChartDemo} from "./ChartDemo/ChartDemo";
 
 const selectCategories = ['forks', 'watchers', 'issues'];
 
@@ -39,13 +29,11 @@ export const Charts = () => {
             setTopAmount(10);
         else
             setTopAmount(data.length);
-        }, [data.length]);
-
+    }, [data.length]);
 
     const optionChangeHandler = () => {
         let xValue = axisSelect.current.value;
         let sortOption = sorting.current.value;
-        console.log(sortOption)
         let sortAndFilter;
         sortOption === 'asc' ? sortAndFilter = data.sort((a, b) => b[xValue] - a[xValue]).slice(0, topAmount) :
             sortAndFilter = data.sort((a, b) => a[xValue] - b[xValue]).slice(0, topAmount);
@@ -64,31 +52,25 @@ export const Charts = () => {
     }
 
     return (
-        <>
+        <div>
             <select ref={axisSelect} onChange={optionChangeHandler}>
                 {chartData.length ? '' :
                     <option>Make your choice</option>
                 }
                 {options}
             </select>
-            <select ref={sorting} onChange={optionChangeHandler}>
-                <option value="asc">Top {topAmount} ascending</option>
-                <option value="desc">Top {topAmount} descending</option>
-            </select>
-            <Paper>
-                <Chart data={chartData}>
-                    <ArgumentAxis/>
-                    <ValueAxis/>
-                    <BarSeries
-                        valueField={axisSelect.current.value}
-                        argumentField="name"
-                    />
-                    <Title text="Chart"/>
-                    <Animation/>
-                    <EventTracker/>
-                    <Tooltip/>
-                </Chart>
-            </Paper>
-        </>
+            {chartData.length ?
+                <select ref={sorting} onChange={optionChangeHandler}>
+                    <option value="asc">Top {topAmount} ascending</option>
+                    <option value="desc">Top {topAmount} descending</option>
+                </select>
+                : ''
+            }
+            <ChartDemo
+                chartData={chartData}
+                valueField={axisSelect.current.value}
+                argumentField={"name"}
+            />
+        </div>
     );
 };
