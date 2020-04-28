@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import styles from "./Table.less"
 import {useDispatch, useSelector} from "react-redux";
 import {fetchMembers} from "../../redux/action";
 import {Modal} from "./Modal/Modal";
@@ -7,6 +6,7 @@ import {columns} from "./TableColumnsTitles";
 import {DefaultColumnFilter, IndeterminateCheckbox} from "./TableService";
 import {TableButtons} from "./TableButtons/TableButtons";
 import {useFilters, usePagination, useRowSelect, useSortBy, useTable} from "react-table";
+import {Pagination, TableStyle} from "./Table.styled";
 
 
 
@@ -31,13 +31,6 @@ export const Table = () => {
         }
     },[]);
 
-    // useEffect(()=>{
-    //     if (selectedFlatRows.length != 1) {
-    //         dispatch(setEdit(false));
-    //         dispatch(showModal(false));
-    //     }
-    // });
-
     const {
         getTableProps,
         getTableBodyProps,
@@ -57,7 +50,7 @@ export const Table = () => {
             columns,
             data,
             defaultColumn,
-            initialState: {pageSize: 6},
+            initialState: {pageSize: 10},
         },
         useFilters,
         useSortBy,
@@ -90,7 +83,7 @@ export const Table = () => {
     }
 
     return (
-        <div>
+        <TableStyle>
 
             <TableButtons
                 selectedFlatRows={selectedFlatRows}
@@ -129,23 +122,7 @@ export const Table = () => {
                 </tbody>
             </table>
 
-            <p>Selected Rows: {Object.keys(selectedRowIds).length}</p>
-            <pre>
-        <code>
-          {JSON.stringify(
-              {
-                  selectedRowIds: selectedRowIds,
-                  'selectedFlatRows[].original': selectedFlatRows.map(
-                      d => d.original
-                  ),
-              },
-              null,
-              2
-          )}
-        </code>
-      </pre>
-
-            <div className="pagination">
+            <Pagination>
             <button onClick={() => previousPage()} disabled={!canPreviousPage}>
                 {'<'}
             </button>
@@ -159,9 +136,10 @@ export const Table = () => {
             <button onClick={() => nextPage()} disabled={!canNextPage}>
                 {'>'}
             </button>
-        </div>
+        </Pagination>
 
             <Modal row = {selectedRow}/>
-        </div>
+
+        </TableStyle>
     )
 };

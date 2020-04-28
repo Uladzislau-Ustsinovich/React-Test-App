@@ -1,5 +1,5 @@
 import {
-    ADD,
+    ADD, CHANGE_THEME,
     DELETE,
     DUBLICATE,
     EDIT,
@@ -12,6 +12,13 @@ import fetcher from "../services/fetcher";
 
 const URL = 'https://api.github.com/users/facebook/repos';
 
+
+export function setTheme(condition) {
+    return {
+        type: CHANGE_THEME,
+        payload: condition
+    }
+}
 
 export function dublicateRows(data) {
     return {

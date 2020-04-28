@@ -28,22 +28,20 @@ export const TableButtons = ({selectedFlatRows, setSelectedRow}) => {
     const editHandler = () => {
         dispatch(showModal(true));
         dispatch(setEdit(true));
-        // console.log(selectedFlatRows)
         setSelectedRow(selectedFlatRows[0].original);
     };
 
     return (
         <div>
             <button onClick={dublicateHandler}>Dublicate</button>
-            < button onClick={deleteHandler}> Delete < /button>
-                <button onClick={addHandler}>Add</button>
-                {
-                    selectedFlatRows.length === 1 &&
-                    <div>
-                        <button onClick={copyHandler}>Copy</button>
-                        <button onClick={editHandler}>Edit</button>
-                    </div>
-                }
+            <button onClick={deleteHandler}> Delete</button>
+            <button onClick={addHandler}>Add</button>
+            {selectedFlatRows.length === 1 &&
+            <>
+                <button onClick={copyHandler}>Copy</button>
+                <button onClick={editHandler}>Edit</button>
+            </>
+            }
         </div>
     )
-}
+};
