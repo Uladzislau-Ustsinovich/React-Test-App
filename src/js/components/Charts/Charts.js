@@ -13,6 +13,7 @@ export const Charts = () => {
     const [isLoading, setLoading] = useState(false);
     const [topAmount, setTopAmount] = useState(0);
     const [chartData, setChartData] = useState([]);
+    const [status, setStatus] = useState(false);
 
     const axisSelect = useRef("forks");
     const sorting = useRef("asc");
@@ -25,18 +26,25 @@ export const Charts = () => {
             dispatch(fetchMembers());
             setLoading(false);
         }
-        if (data.length >= 10)
+        let amount;
+        if (data.length >= 10) {
             setTopAmount(10);
-        else
+            amount = 10;
+        } else {
             setTopAmount(data.length);
-    }, [data.length]);
+            amount = data.length;
+        }
+        optionChangeHandler(amount);
+    }, [data.length, optionChangeHandler]);
 
-    const optionChangeHandler = () => {
+
+    const optionChangeHandler = (amount) => {
         let xValue = axisSelect.current.value;
         let sortOption = sorting.current.value;
         let sortAndFilter;
-        sortOption === 'asc' ? sortAndFilter = data.sort((a, b) => b[xValue] - a[xValue]).slice(0, topAmount) :
-            sortAndFilter = data.sort((a, b) => a[xValue] - b[xValue]).slice(0, topAmount);
+        // debugger
+        sortOption == "asc" ? sortAndFilter = data.sort((a, b) => b[xValue] - a[xValue]).slice(0, amount) :
+            sortAndFilter = data.sort((a, b) => a[xValue] - b[xValue]).slice(0, amount);
         setChartData(sortAndFilter.map(i => {
             return {
                 name: i.name,
@@ -53,19 +61,13 @@ export const Charts = () => {
 
     return (
         <div>
-            <select ref={axisSelect} onChange={optionChangeHandler}>
-                {chartData.length ? '' :
-                    <option>Make your choice</option>
-                }
+            <select ref={axisSelect} onChange={()=>optionChangeHandler(topAmount)}>
                 {options}
             </select>
-            {chartData.length ?
-                <select ref={sorting} onChange={optionChangeHandler}>
-                    <option value="asc">Top {topAmount} ascending</option>
-                    <option value="desc">Top {topAmount} descending</option>
-                </select>
-                : ''
-            }
+            <select ref={sorting} onChange={()=>optionChangeHandler(topAmount)}>
+                <option value="asc">Top {topAmount} ascending</option>
+                <option value="desc">Top {topAmount} descending</option>
+            </select>
             <ChartDemo
                 chartData={chartData}
                 valueField={axisSelect.current.value}

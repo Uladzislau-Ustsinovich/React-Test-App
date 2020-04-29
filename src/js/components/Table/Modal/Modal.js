@@ -3,6 +3,8 @@ import {useDispatch, useSelector} from "react-redux";
 import {checkFields} from "./validation";
 import {addRow, editRow, setEdit, showModal} from "../../../redux/action";
 import {ModalInputFields} from "./ModalInputFields/ModalInputFields";
+import {ModalContent, ModalStyle} from "./Modal.styled";
+import {ModalButtons} from "./ModalButtons/ModalButtons";
 
 
 export const Modal = ({row}) => {
@@ -66,43 +68,30 @@ export const Modal = ({row}) => {
     };
 
     return (
-        <div>
+        <>
             {isModalShow &&
-            <div className="modal">
-                <div className="modal__window">
+            <ModalStyle>
+                <ModalContent>
+                    <span className="close" onClick={closeHandler}>&times;</span>
                     <div className="modal__header">
                         <h3 className="modal__title">
-
+                            Дарова бандиты
                         </h3>
                     </div>
                     <ModalInputFields
                         changeInputHandler={changeInputHandler}
                         rowBuffer={rowBuffer}
                     />
-                    <div className="modal__footer">
-                        {isEdit &&
-                        <button className="modal__footer_btn" onClick={editHandler}>
-                            Edit
-                        </button>
-                        }
-                        {!isEdit &&
-                        <button className="modal__footer_btn" onClick={submitHandler}>
-                            Submit
-                        </button>
-                        }
-                        <button className="modal__footer_btn" onClick={pasteHandler}>
-                            Paste
-                        </button>
-                        <button className="modal__footer_btn" onClick={clearFields}>
-                            Clear
-                        </button>
-                        <button className="modal__footer_btn" onClick={closeHandler}>
-                            Close
-                        </button>
-                    </div>
-                </div>
-            </div>
+                    <ModalButtons
+                        submitHandler={submitHandler}
+                        editHandler={editHandler}
+                        pasteHandler={pasteHandler}
+                        clearFields={clearFields}
+                        closeHandler={closeHandler}
+                    />
+                </ModalContent>
+            </ModalStyle>
             }
-        </div>
+        </>
     )
 }

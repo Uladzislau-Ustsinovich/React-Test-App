@@ -99,7 +99,6 @@ export const Table = () => {
                                 <div>
                                     <span {...column.getSortByToggleProps()}>
                                         {column.render('Header')}
-                                        {column.isSorted ? column.isSortedDesc ? '🔽' : '🔼' : ''}
                                     </span>
                                 </div>
                                 <div>{column.canFilter ? column.render('Filter') : null}</div>

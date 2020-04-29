@@ -1,46 +1,12 @@
 import React from "react";
 import {checkFields} from "../validation";
 import {addRow, editRow, setEdit, showModal} from "../../../../redux/action";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 
 
-export const ModalButtons = () =>{
+export const ModalButtons = ({submitHandler, editHandler, pasteHandler, clearFields, closeHandler}) => {
     const dispatch = useDispatch();
-
-    const changeInputHandler = (event) => {
-        setBuffer({...rowBuffer, [event.target.name]: event.target.value});
-    };
-
-    const clearFields = () => {
-        for (let key in rowBuffer)
-            setBuffer(prev => ({...prev, ...{[key]: ''}}));
-    };
-
-    const submitHandler = () => {
-        console.log(rowBuffer)
-        if (!checkFields(rowBuffer)) return;
-        dispatch(addRow(rowBuffer));
-        clearFields();
-        closeHandler();
-    };
-
-    const editHandler = () => {
-        if (!checkFields(rowBuffer)) return;
-        dispatch(editRow(rowBuffer));
-        closeHandler();
-    };
-
-
-    const pasteHandler = () => {
-        let obj = JSON.parse(localStorage.getItem("copy"));
-        pasteToRow(obj);
-    };
-
-    const closeHandler = () => {
-        clearFields();
-        dispatch(showModal(false));
-        dispatch(setEdit(false));
-    };
+    const isEdit = useSelector(state => state.table.isEdit);
 
     return (
         <div className="modal__footer">

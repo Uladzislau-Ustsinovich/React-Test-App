@@ -3,6 +3,7 @@ const countOfFields = 5;
 
 export const checkFields = (props) => {
     let count = 0;  //проверяем, чтоб на выходе было проверенно нужное количество полей
+    // pr.values
     for (let key in props) {
         count++;
         if (!props[key].trim()) {

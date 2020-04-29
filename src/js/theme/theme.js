@@ -4,7 +4,8 @@ export const lightTheme = {
     toggleBorder: '#FFF',
     header: '#3026c5',
     gradient: 'linear-gradient(#39598A, #79D7ED)',
-    tableBorder: '#30475e'
+    tableBorder: '#30475e',
+    buttonBackground: '#382eff'
 
 }
 

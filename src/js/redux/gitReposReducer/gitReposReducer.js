@@ -1,4 +1,4 @@
-import {ADD, DELETE, DUBLICATE, EDIT, FETCH_DATA} from "./types";
+import {ADD, DELETE, DUBLICATE, EDIT, FETCH_DATA} from "../types";
 import { v4 as uuidv4 } from 'uuid';
 
 const initialState = {
@@ -9,13 +9,16 @@ const initialState = {
 export const gitReposReducer = (state = initialState, action) => {
     switch (action.type) {
         case DUBLICATE: {
-            let newDate = JSON.parse(JSON.stringify(state.data));
+            const newData = [...state.data];
             for (let ind = 0; ind < action.payload.length; ind++) { //получаем массив из вьюхи, поэтому надо сравнить весь массив с хранилищем
-                let index = newDate.findIndex(x => x._id === action.payload[ind]._id);
-                newDate.splice(index, 0, action.payload[ind]);
-                newDate[index + 1]._id = uuidv4();
+                let index = newData.findIndex(x => x._id === action.payload[ind]._id);
+                const newRow = {
+                    ...action.payload[ind],
+                    _id: uuidv4(),
+                };
+                newData.splice(index, 0, newRow);
             }
-            return {...state, data: newDate};
+            return {...state, data: newData};
         }
         case DELETE:
             return {
