@@ -4,21 +4,12 @@ import {
     DUBLICATE,
     EDIT,
     FETCH_DATA,
-    SHOW_EDIT,
-    SHOW_MODAL
 } from "./types";
 import {v4 as uuidv4} from 'uuid';
 import fetcher from "../services/fetcher";
 
 const URL = 'https://api.github.com/users/facebook/repos';
 
-
-export function setTheme(condition) {
-    return {
-        type: CHANGE_THEME,
-        payload: condition
-    }
-}
 
 export function dublicateRows(data) {
     return {
@@ -34,13 +25,6 @@ export function deleteRows(id) {
     }
 }
 
-export function showModal(condition) {
-    return {
-        type: SHOW_MODAL,
-        payload: condition
-    }
-}
-
 export function addRow(data) {
     return {
         type: ADD,
@@ -52,13 +36,6 @@ export function editRow(data) {
     return {
         type: EDIT,
         payload: data
-    }
-}
-
-export function setEdit(condition) {
-    return {
-        type: SHOW_EDIT,
-        payload: condition
     }
 }
 

@@ -3,10 +3,10 @@ export const lightTheme = {
     text: '#363537',
     toggleBorder: '#FFF',
     header: '#3026c5',
-    gradient: 'linear-gradient(#39598A, #79D7ED)',
     tableBorder: '#30475e',
-    buttonBackground: '#382eff'
-
+    buttonBackground: '#4d55f7',
+    chartBackground: '#FAFAFA',
+    chartBarBackground: "#4d55f7"
 }
 
 export const darkTheme = {
@@ -14,6 +14,8 @@ export const darkTheme = {
     text: '#FAFAFA',
     toggleBorder: '#6B8096',
     header: '#30475e',
-    gradient: 'linear-gradient(#091236, #1E215D)',
-    tableBorder: '#ffffff'
+    tableBorder: '#ffffff',
+    buttonBackground: '#6B8096',
+    chartBackground: '#9ebcd8',
+    chartBarBackground: "#363d47"
 }

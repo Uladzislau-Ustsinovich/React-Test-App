@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 
 export const TableStyle = styled.div`
-//width: 100%;
-//text-align: center;
     max-width: 1200px;
     margin: 0 auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 table {
     border-spacing: 0;
     font-size: 20px;
@@ -33,6 +35,11 @@ table {
     }
 }
 `
+
 export const Pagination = styled.div`
   text-align: center;
+  span {
+    font-size: 25px;
+    padding: 0 20px;
+  }
 `

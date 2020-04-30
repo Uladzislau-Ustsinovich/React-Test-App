@@ -1,21 +1,19 @@
-import React, {useEffect, useState} from 'react'
+import React from 'react'
 import {ToggleContainer} from "./Toggle.styled";
 import {useDispatch, useSelector} from "react-redux";
-import {setTheme} from "../../../redux/action";
+import {setTheme} from "../../../theme/action";
 
 export const Toggle = () => {
     const dispatch = useDispatch();
-    const theme = useSelector(state => state.app.theme);
+    const theme = useSelector(state => state.theme.themeCondition);
 
     const changeHandler = () =>{
         if (theme === 'light') {
             window.localStorage.setItem('theme', 'dark')
             dispatch(setTheme('dark'));
-            setChecked(true);
         } else {
             window.localStorage.setItem('theme', 'light')
             dispatch(setTheme('light'));
-            setChecked(false);
         }
     };
 
@@ -23,7 +21,7 @@ export const Toggle = () => {
         <ToggleContainer>
             <label className="switch">
                 <input type="checkbox" onClick={changeHandler}/>
-                <span className="slider round"></span>
+                <span className="slider round"/>
             </label>
         </ToggleContainer>
     )

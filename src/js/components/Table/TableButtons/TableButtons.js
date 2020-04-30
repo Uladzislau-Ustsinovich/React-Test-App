@@ -1,13 +1,15 @@
 import React from "react";
-import {deleteRows, dublicateRows, setEdit, showModal} from "../../../redux/action";
+import {deleteRows, dublicateRows} from "../../../redux/action";
 import {useDispatch} from "react-redux";
+import {setEdit, showModal} from "../Modal/ModalReducer/actions";
+import {ButtonStyled} from "./TableButtons.styled";
 
 
 export const TableButtons = ({selectedFlatRows, setSelectedRow}) => {
     const dispatch = useDispatch();
 
     const dublicateHandler = () => {
-        const data = selectedFlatRows.map(d => d.original);
+        const data = selectedFlatRows.map(d => d.original._id);
         dispatch(dublicateRows(data));
     };
 
@@ -33,13 +35,13 @@ export const TableButtons = ({selectedFlatRows, setSelectedRow}) => {
 
     return (
         <div>
-            <button onClick={dublicateHandler}>Dublicate</button>
-            <button onClick={deleteHandler}> Delete</button>
-            <button onClick={addHandler}>Add</button>
+            <ButtonStyled onClick={dublicateHandler}>Dublicate</ButtonStyled>
+            <ButtonStyled onClick={deleteHandler}> Delete</ButtonStyled>
+            <ButtonStyled onClick={addHandler}>Add</ButtonStyled>
             {selectedFlatRows.length === 1 &&
             <>
-                <button onClick={copyHandler}>Copy</button>
-                <button onClick={editHandler}>Edit</button>
+                <ButtonStyled onClick={copyHandler}>Copy</ButtonStyled>
+                <ButtonStyled onClick={editHandler}>Edit</ButtonStyled>
             </>
             }
         </div>

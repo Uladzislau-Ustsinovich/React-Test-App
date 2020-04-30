@@ -7,7 +7,8 @@ import {DefaultColumnFilter, IndeterminateCheckbox} from "./TableService";
 import {TableButtons} from "./TableButtons/TableButtons";
 import {useFilters, usePagination, useRowSelect, useSortBy, useTable} from "react-table";
 import {Pagination, TableStyle} from "./Table.styled";
-
+import {Loader} from "../Loader/Loader";
+import {ButtonStyled} from "./TableButtons/TableButtons.styled";
 
 
 export const Table = () => {
@@ -23,13 +24,13 @@ export const Table = () => {
         }),
         []
     );
-    useEffect(()=>{
-        if(!data.length) {
+    useEffect(() => {
+        if (!data.length) {
             setLoading(true);
             dispatch(fetchMembers());
             setLoading(false);
         }
-    },[]);
+    }, []);
 
     const {
         getTableProps,
@@ -77,9 +78,8 @@ export const Table = () => {
     );
 
 
-
     if (isLoading) {
-        return <h2>Loading</h2>
+        return <Loader/>
     }
 
     return (
@@ -122,22 +122,22 @@ export const Table = () => {
             </table>
 
             <Pagination>
-            <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-                {'<'}
-            </button>
+                <ButtonStyled onClick={() => previousPage()} disabled={!canPreviousPage}>
+                    {'Prev'}
+                </ButtonStyled>
 
-            <span>
+                <span>
                     <strong>
                         {pageIndex + 1} of {pageOptions.length}
                     </strong>{' '}
                 </span>
 
-            <button onClick={() => nextPage()} disabled={!canNextPage}>
-                {'>'}
-            </button>
-        </Pagination>
+                <ButtonStyled onClick={() => nextPage()} disabled={!canNextPage}>
+                    {'Next'}
+                </ButtonStyled>
+            </Pagination>
 
-            <Modal row = {selectedRow}/>
+            <Modal row={selectedRow}/>
 
         </TableStyle>
     )

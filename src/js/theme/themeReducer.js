@@ -1,13 +1,13 @@
 import {CHANGE_THEME} from "./types";
 
 const initialState = {
-    theme: ""
+    themeCondition: ""
 }
 
-export const appReducer = (state = initialState, action) => {
+export const themeReducer = (state = initialState, action) => {
     switch (action.type) {
         case CHANGE_THEME: {
-            return {...state, theme: action.payload};
+            return {...state, themeCondition: action.payload};
         }
         default:
             return state

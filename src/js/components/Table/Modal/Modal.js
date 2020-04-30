@@ -1,18 +1,20 @@
 import React, {useState, useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {checkFields} from "./validation";
-import {addRow, editRow, setEdit, showModal} from "../../../redux/action";
+import {addRow, editRow} from "../../../redux/action";
 import {ModalInputFields} from "./ModalInputFields/ModalInputFields";
-import {ModalContent, ModalStyle} from "./Modal.styled";
-import {ModalButtons} from "./ModalButtons/ModalButtons";
+import {CloseStyled, ModalContent, ModalStyled} from "./Modal.styled";
+import {setEdit, showModal} from "./ModalReducer/actions";
+import {ButtonStyled} from "../TableButtons/TableButtons.styled";
 
+const numberValues = ["id", "forks", "watchers", "issues"];
 
 export const Modal = ({row}) => {
     const dispatch = useDispatch();
     const [rowBuffer, setBuffer] = useState({});
 
-    const isModalShow = useSelector(state => state.table.isModalShow);
-    const isEdit = useSelector(state => state.table.isEdit);
+    const isModalShow = useSelector(state => state.modal.isModalShow);
+    const isEdit = useSelector(state => state.modal.isEdit);
 
     useEffect(() => {
         clearFields();
@@ -21,28 +23,31 @@ export const Modal = ({row}) => {
         }
     }, [isEdit]);
 
-    const pasteToRow = (obj) => {
+    const pasteToRow = obj => {
         setBuffer({
-            _id: obj._id.toString(),
-            id: obj.id.toString(),
-            name: obj.name.toString(),
-            forks: obj.forks.toString(),
-            watchers: obj.watchers.toString(),
-            issues: obj.issues.toString()
+            _id: obj._id,
+            id: Number(obj.id),
+            name: obj.name,
+            forks: Number(obj.forks),
+            watchers: Number(obj.watchers),
+            issues: Number(obj.issues)
         });
     };
 
-    const changeInputHandler = (event) => {
-        setBuffer({...rowBuffer, [event.target.name]: event.target.value});
+    const changeInputHandler = event => {
+        if (numberValues.includes(event.target.name)) {
+            setBuffer({...rowBuffer, [event.target.name]: Number(event.target.value)});
+        } else
+            setBuffer({...rowBuffer, [event.target.name]: event.target.value});
     };
 
     const clearFields = () => {
         for (let key in rowBuffer)
             setBuffer(prev => ({...prev, ...{[key]: ''}}));
+            setBuffer(prev => ({...prev, ...{_id: ''}}));
     };
 
     const submitHandler = () => {
-        console.log(rowBuffer)
         if (!checkFields(rowBuffer)) return;
         dispatch(addRow(rowBuffer));
         clearFields();
@@ -70,9 +75,9 @@ export const Modal = ({row}) => {
     return (
         <>
             {isModalShow &&
-            <ModalStyle>
+            <ModalStyled>
                 <ModalContent>
-                    <span className="close" onClick={closeHandler}>&times;</span>
+                    <CloseStyled onClick={closeHandler}>&times;</CloseStyled>
                     <div className="modal__header">
                         <h3 className="modal__title">
                             Дарова бандиты
@@ -82,15 +87,29 @@ export const Modal = ({row}) => {
                         changeInputHandler={changeInputHandler}
                         rowBuffer={rowBuffer}
                     />
-                    <ModalButtons
-                        submitHandler={submitHandler}
-                        editHandler={editHandler}
-                        pasteHandler={pasteHandler}
-                        clearFields={clearFields}
-                        closeHandler={closeHandler}
-                    />
+                    <div className="modal__footer">
+                        {isEdit &&
+                        <ButtonStyled onClick={editHandler}>
+                            Edit
+                        </ButtonStyled>
+                        }
+                        {!isEdit &&
+                        <ButtonStyled onClick={submitHandler}>
+                            Submit
+                        </ButtonStyled>
+                        }
+                        <ButtonStyled onClick={pasteHandler}>
+                            Paste
+                        </ButtonStyled>
+                        <ButtonStyled onClick={clearFields}>
+                            Clear
+                        </ButtonStyled>
+                        <ButtonStyled onClick={closeHandler}>
+                            Close
+                        </ButtonStyled>
+                    </div>
                 </ModalContent>
-            </ModalStyle>
+            </ModalStyled>
             }
         </>
     )

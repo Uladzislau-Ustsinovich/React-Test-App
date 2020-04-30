@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const ModalStyle = styled.div`
+export const ModalStyled = styled.div`
   display: block; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
@@ -11,23 +11,23 @@ export const ModalStyle = styled.div`
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+`
 
-  /* The Close Button */
-.close {
+export const CloseStyled = styled.span`
   color: #aaaaaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
   transition: all 0.2s linear;
-}
 
-.close:hover,
-.close:focus {
+&:hover,
+&:focus {
   color: ${({theme}) => theme.text};
   text-decoration: none;
   cursor: pointer;
 }
 `
+
 
 export const ModalContent = styled.div`
   background-color: ${({theme}) => theme.body};
@@ -36,5 +36,5 @@ export const ModalContent = styled.div`
   padding: 20px;
   border: 1px solid #888;
   width: 60%;
-
+  position: relative;
 `

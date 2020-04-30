@@ -10,17 +10,19 @@ import {
 } from '@devexpress/dx-react-chart-material-ui';
 
 import {Animation, EventTracker} from '@devexpress/dx-react-chart';
+import {ChartDemoStyle} from "./ChartDemo.styled";
 
 
-export const ChartDemo = ({chartData, valueField, argumentField}) =>{
+export const ChartDemo = ({chartData, valueField, argumentField}) => {
 
     return (
-        <div>
-            <Paper>
+        <ChartDemoStyle>
+            <Paper style={{background: "inherit"}}>
                 <Chart data={chartData}>
                     <ArgumentAxis/>
                     <ValueAxis/>
                     <BarSeries
+                        style={{fill: "inherit"}}
                         valueField={valueField}
                         argumentField={argumentField}
                     />
@@ -30,6 +32,6 @@ export const ChartDemo = ({chartData, valueField, argumentField}) =>{
                     <Tooltip/>
                 </Chart>
             </Paper>
-        </div>
+        </ChartDemoStyle>
     )
 }

@@ -5,15 +5,15 @@ import {fetchMembers} from "../../redux/action";
 import {useState} from "react";
 import {useRef} from "react";
 import {ChartDemo} from "./ChartDemo/ChartDemo";
+import {Loader} from "../Loader/Loader";
 
-const selectCategories = ['forks', 'watchers', 'issues'];
+const selectCategories = ['forks', 'watchers', 'issues']; // Y AXIS
 
 export const Charts = () => {
     const dispatch = useDispatch();
     const [isLoading, setLoading] = useState(false);
     const [topAmount, setTopAmount] = useState(0);
     const [chartData, setChartData] = useState([]);
-    const [status, setStatus] = useState(false);
 
     const axisSelect = useRef("forks");
     const sorting = useRef("asc");
@@ -42,8 +42,7 @@ export const Charts = () => {
         let xValue = axisSelect.current.value;
         let sortOption = sorting.current.value;
         let sortAndFilter;
-        // debugger
-        sortOption == "asc" ? sortAndFilter = data.sort((a, b) => b[xValue] - a[xValue]).slice(0, amount) :
+        sortOption === "asc" ? sortAndFilter = data.sort((a, b) => b[xValue] - a[xValue]).slice(0, amount) :
             sortAndFilter = data.sort((a, b) => a[xValue] - b[xValue]).slice(0, amount);
         setChartData(sortAndFilter.map(i => {
             return {
@@ -56,7 +55,7 @@ export const Charts = () => {
     let options = selectCategories.map((i, ind) => <option value={i} key={ind}>{i.toUpperCase()}</option>);
 
     if (isLoading) {
-        return <h2>Loading</h2>
+        return <Loader/>
     }
 
     return (

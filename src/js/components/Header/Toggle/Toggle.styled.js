@@ -33,7 +33,7 @@ export const ToggleContainer = styled.div`
   width: 26px;
   left: 4px;
   bottom: 4px;
-  background-color: ${({ theme }) => theme.toggleBorder};
+   background-color: ${({ theme }) => theme.toggleBorder};
   -webkit-transition: .4s;
   transition: .4s;
 }

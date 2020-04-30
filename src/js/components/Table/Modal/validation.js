@@ -1,25 +1,50 @@
-const numberFields = ['id', 'forks', 'watchers', 'issues'];
-const countOfFields = 5;
+const countOfFields = 6;
 
 export const checkFields = (props) => {
-    let count = 0;  //проверяем, чтоб на выходе было проверенно нужное количество полей
-    // pr.values
-    for (let key in props) {
-        count++;
-        if (!props[key].trim()) {
-            alert("Please Fill All Required Field");
-            return false;
+    let hasProblem = false;
+    Object.keys(props).forEach(key => {
+        if (fields[key].validation(props[key])) {
+            alert(`Please fill ${key} field correctly`);
+            hasProblem = true;
+            return false
         }
-        if (numberFields.find(item => item === key))
-            if (isNaN(props[key])) {
-                alert(`${key} is should be a number`);
-                return false;
-            }
-    }
-    console.log(count)
-    if (count-1 === countOfFields) //поле _id тоже входит в остав объекта
-        return true;
-    else
-        alert("Please Fill All Required Field");
-    return false;
+    });
+    return !(countOfFields !== Object.keys(props).length || hasProblem);
 };
+
+const fields = {
+    _id: {
+        validation(variable) {
+            /* ¯\_(ツ)_/¯ */
+        },
+    },
+    id: {
+        validation(variable) {
+            return validateNumber(variable);
+        },
+    },
+    name: {
+        validation(variable) {
+            return validateString(variable);
+        }
+    },
+    forks: {
+        validation(variable) {
+            return validateNumber(variable);
+        }
+    },
+    watchers: {
+        validation(variable) {
+            return (validateNumber(variable) || variable < 0);
+        }
+    },
+    issues: {
+        validation(variable) {
+            return validateNumber(variable);
+        }
+    }
+};
+
+const validateString = variable => !variable.trim();
+
+const validateNumber = variable => isNaN(variable) || !variable.toString().trim();
