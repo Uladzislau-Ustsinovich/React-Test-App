@@ -1,0 +1,5 @@
+export const SET_GIT_REPOS = 'DATA/SET_GIT_REPOS'
+export const DUBLICATE = 'DATA/DUBLICATE'
+export const DELETE = 'DATA/DELETE'
+export const ADD = 'DATA/ADD'
+export const EDIT = 'DATA/EDIT'

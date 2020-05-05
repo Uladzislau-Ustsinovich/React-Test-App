@@ -1,53 +1,56 @@
-import React, {useEffect} from 'react'
-import {Table} from "./components/Table/Table";
-import {Switch, Route} from 'react-router-dom';
-import {Header} from "./components/Header/Header";
-import {Charts} from "./components/Charts/Charts";
-import {ThemeProvider} from "styled-components";
-import {lightTheme, darkTheme} from "./theme/theme";
-import {GlobalStyles} from "./theme/global";
-import {useDispatch, useSelector} from "react-redux";
-import {setTheme} from "./theme/action";
-import {
-    CSSTransition,
-    TransitionGroup
-} from 'react-transition-group'
-import "./App.less"
+import React, { useEffect, useState } from 'react'
+import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { Header } from './components/Header/Header'
+import { GitReposChart } from './components/GitReposChart/GitReposChart'
+import { ThemeProvider } from 'styled-components'
+import { lightTheme, darkTheme } from './theme/theme'
+import { GlobalStyles } from './theme/global'
+import { CSSTransition, TransitionGroup } from 'react-transition-group'
+import './App.less'
+import { chartPath, tablePath } from './constants/routePaths'
+import { transitionTimeout } from './constants/transitionConst'
+import { GitReposTable } from './components/GitReposTable/GitReposTable'
+import { Provider } from 'react-redux'
+import { store } from './redux/rootReducer'
 
 function App() {
-    const dispatch = useDispatch();
-    const theme = useSelector(state => state.theme.themeCondition);
+  const [theme, setTheme] = useState('light')
 
-    useEffect(() => {
-        const localTheme = window.localStorage.getItem('theme');
-        localTheme && dispatch(setTheme(localTheme));
-    }, []);
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem('theme')
+    localTheme && setTheme(localTheme)
+  }, [])
 
-    return (
+  const changeThemeHandler = condition => {
+    setTheme(condition)
+  }
+
+  return (
+    <BrowserRouter>
+      <Provider store={store}>
         <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
-            <div>
-                <GlobalStyles/>
-                <Header/>
-                <div className="App">
-
-                    <Route render={({location}) => (
-                        <TransitionGroup>
-                            <CSSTransition
-                                key={location.key}
-                                classNames="fade"
-                                timeout={1000}>
-                                <Switch location = {location}>
-                                    <Route exact path="/" component={Table}/>
-                                    <Route path="/Chart" component={Charts}/>
-                                </Switch>
-                            </CSSTransition>
-                        </TransitionGroup>
-                    )}/>
-
-                </div>
+          <div>
+            <GlobalStyles />
+            <Header changeThemeHandler={changeThemeHandler} />
+            <div className="App">
+              <Route
+                render={({ location }) => (
+                  <TransitionGroup>
+                    <CSSTransition key={location.key} classNames="fade" timeout={transitionTimeout}>
+                      <Switch location={location}>
+                        <Route exact path={tablePath} component={GitReposTable} />
+                        <Route path={chartPath} component={GitReposChart} />
+                      </Switch>
+                    </CSSTransition>
+                  </TransitionGroup>
+                )}
+              />
             </div>
+          </div>
         </ThemeProvider>
-    )
+      </Provider>
+    </BrowserRouter>
+  )
 }
 
 export default App

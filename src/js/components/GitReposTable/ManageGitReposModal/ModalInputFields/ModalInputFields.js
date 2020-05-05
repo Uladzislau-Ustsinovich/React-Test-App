@@ -1,5 +1,5 @@
 import React from "react";
-import './ModalInputFields.less'
+import '../../../Shareable/Modal/modalInputFields.less'
 
 export const ModalInputFields = ({changeInputHandler, rowBuffer}) => {
     return (

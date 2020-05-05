@@ -5,7 +5,7 @@ const initialState = {
     isEdit: false,
 }
 
-export const modalReducer = (state = initialState, action) => {
+export const gitReposModalReducer = (state = initialState, action) => {
     switch (action.type) {
         case SHOW_MODAL:
             return {...state, isModalShow: action.payload};

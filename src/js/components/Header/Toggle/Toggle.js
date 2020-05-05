@@ -1,29 +1,24 @@
 import React from 'react'
-import {ToggleContainer} from "./Toggle.styled";
-import {useDispatch, useSelector} from "react-redux";
-import {setTheme} from "../../../theme/action";
+import { ToggleContainer } from './Toggle.styled'
 
-export const Toggle = () => {
-    const dispatch = useDispatch();
-    const theme = useSelector(state => state.theme.themeCondition);
+export const Toggle = ({ changeThemeHandler }) => {
+  const changeHandler = () => {
+    const theme = window.localStorage.getItem('theme')
+    if (theme === 'light') {
+      window.localStorage.setItem('theme', 'dark')
+      changeThemeHandler('dark')
+    } else {
+      window.localStorage.setItem('theme', 'light')
+      changeThemeHandler('light')
+    }
+  }
 
-    const changeHandler = () =>{
-        if (theme === 'light') {
-            window.localStorage.setItem('theme', 'dark')
-            dispatch(setTheme('dark'));
-        } else {
-            window.localStorage.setItem('theme', 'light')
-            dispatch(setTheme('light'));
-        }
-    };
-
-    return (
-        <ToggleContainer>
-            <label className="switch">
-                <input type="checkbox" onClick={changeHandler}/>
-                <span className="slider round"/>
-            </label>
-        </ToggleContainer>
-    )
+  return (
+    <ToggleContainer>
+      <label className="switch">
+        <input type="checkbox" onClick={changeHandler} />
+        <span className="slider round" />
+      </label>
+    </ToggleContainer>
+  )
 }
-

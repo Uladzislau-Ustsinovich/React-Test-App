@@ -29,4 +29,3 @@ export const ButtonStyled = styled.div`
         border-color: #ffff;
     }
 `
-

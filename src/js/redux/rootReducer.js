@@ -1,13 +1,9 @@
 import {applyMiddleware, combineReducers, compose, createStore} from "redux";
 import thunk from "redux-thunk";
-import {modalReducer} from "../components/Table/Modal/ModalReducer/modalReducer";
-import {gitReposReducer} from "./gitReposReducer";
-import {themeReducer} from "../theme/themeReducer";
+import {gitReposReducer} from "../components/GitReposTable/redux/gitReposReducer";
 
 const rootReducer = combineReducers({
     gitRepos: gitReposReducer,
-    modal: modalReducer,
-    theme: themeReducer
 })
 
 export const store = createStore(rootReducer, compose(
