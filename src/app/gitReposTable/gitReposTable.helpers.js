@@ -49,6 +49,8 @@ const validateString = variable => !variable.trim()
 
 const validateNumber = variable => isNaN(variable) || !variable.toString().trim()
 
+
+
 export const pasteToRow = (setRow, copiedRow) => {
   setRow({
     _id: copiedRow._id,

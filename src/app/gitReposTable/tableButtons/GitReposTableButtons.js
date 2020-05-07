@@ -5,7 +5,7 @@ import {Button} from "../../../components/button/Button";
 import {COPIED_GIT_REPO} from "../gitReposTable.constants";
 
 
-export const GitReposTableButtons = ({ selectedFlatRows, setSelectedRow, setModalShow, setEdit }) => {
+export const GitReposTableButtons = ({ selectedFlatRows, setSelectedRow, setShowModal, setShowModalForEdit }) => {
   const dispatch = useDispatch()
 
   const dublicateHandler = () => {
@@ -23,13 +23,13 @@ export const GitReposTableButtons = ({ selectedFlatRows, setSelectedRow, setModa
   }
 
   const addHandler = () => {
-    setModalShow(true)
-    setEdit(false)
+    setShowModal(true)
+    setShowModalForEdit(false)
   }
 
   const editHandler = () => {
-    setModalShow(true)
-    setEdit(true)
+    setShowModal(true)
+    setShowModalForEdit(true)
     setSelectedRow(selectedFlatRows[0].original)
   }
 

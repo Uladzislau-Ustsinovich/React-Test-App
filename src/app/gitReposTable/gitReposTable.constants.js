@@ -1,7 +1,7 @@
 export const PAGE_ROWS_COUNT = 7
 export const COPIED_GIT_REPO = 'copiedGitRepo'
 
-export const COLUMNS = [
+export const COLUMN_TITLES = [
   {
     Header: 'Id',
     accessor: 'id'

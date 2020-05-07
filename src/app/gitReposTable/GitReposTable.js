@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Table } from '../../components/table/Table'
 import { GitReposTableButtons } from './tableButtons/GitReposTableButtons'
-import { COLUMNS } from './gitReposTable.constants'
+import {COLUMN_TITLES} from './gitReposTable.constants'
 import { Loader } from '../../components/loader/Loader'
 import { fetchMembers } from './state/gitReposTable.action'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,10 +12,10 @@ import { gitReposDataSelector } from './state/gitReposTable.selectors'
 export const GitReposTable = () => {
   const dispatch = useDispatch()
   const [selectedRows, setSelectedRows] = useState([])
-  const [selectedRow, setSelectedRow] = useState({}) // For edit button
+  const [selectedRowForEdit, setSelectedRowForEdit] = useState({}) // For edit button
   const [isLoading, setLoading] = useState(false)
-  const [isModalShow, setModalShow] = useState(false)
-  const [isEdit, setEdit] = useState(false)
+  const [isShowModal, setShowModal] = useState(false)
+  const [isShowModalForEdit, setShowModalForEdit] = useState(false)
   const data = useSelector(gitReposDataSelector)
 
   useEffect(() => {
@@ -33,19 +33,19 @@ export const GitReposTable = () => {
     <GitReposTableWrapper>
       <GitReposTableButtons
         selectedFlatRows={selectedRows}
-        setSelectedRow={setSelectedRow}
-        setModalShow={setModalShow}
-        setEdit={setEdit}
+        setSelectedRow={setSelectedRowForEdit}
+        setShowModal={setShowModal}
+        setShowModalForEdit={setShowModalForEdit}
       />
 
-      <Table columns={COLUMNS} data={data} selectedRowsSetHandler={setSelectedRows} />
+      <Table columns={COLUMN_TITLES} data={data} selectedRowsSetHandler={setSelectedRows} />
 
-      {isModalShow && (
+      {isShowModal && (
         <ManageGitReposModal
-          row={selectedRow}
-          setShowModal={setModalShow}
-          setEdit={setEdit}
-          isEdit={isEdit}
+          selectedRow={selectedRowForEdit}
+          setShowModal={setShowModal}
+          setShowModalForEdit={setShowModalForEdit}
+          isShowModalForEdit={isShowModalForEdit}
         />
       )}
     </GitReposTableWrapper>

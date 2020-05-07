@@ -7,8 +7,8 @@ import { Loader } from '../../components/loader/Loader'
 import { GitReposChartWrapper } from './gitReposChart.styled'
 import { Select } from '../../components/select/Select'
 import { gitReposDataSelector } from '../gitReposTable/state/gitReposTable.selectors'
-import { CHART_VISUALIZATION_TYPE } from './gitReposChart.constants'
-import {sortChartDataByType} from "./gitReposChart.helpers";
+import {CHART_ARGUMENT_FIELD, CHART_VISUALIZATION_TYPE} from './gitReposChart.constants'
+import { sortChartDataByType } from './gitReposChart.helpers'
 
 export const GitReposChart = () => {
   const dispatch = useDispatch()
@@ -27,16 +27,12 @@ export const GitReposChart = () => {
   useEffect(() => {
     if (!data.length) {
       setLoading(true)
-      dispatch(fetchMembers()).then(() => {
-        setLoading(false)
-        setTopAmount(data.length)
-      })
+      dispatch(fetchMembers()).then(() => setLoading(false))
     }
   }, [data.length, dispatch])
 
   useEffect(() => {
-    if (data.length >= 10) setTopAmount(10)
-    else setTopAmount(data.length)
+    data.length >= 10 ? setTopAmount(10) : setTopAmount(data.length)
     optionChangeHandler()
   }, [data.length, topAmount, axisSelect, sortCondition, optionChangeHandler])
 
@@ -61,11 +57,8 @@ export const GitReposChart = () => {
   return (
     <GitReposChartWrapper>
       <Select setHandler={setAxisSelect} optionsArray={axisOptions} />
-      <Select setHandler={setSortCondition} optionsArray={amountOptions}>
-        <option value="asc">Top {topAmount} ascending</option>
-        <option value="desc">Top {topAmount} descending</option>
-      </Select>
-      <Chart chartData={chartData} valueField={axisSelect} argumentField={'name'} />
+      <Select setHandler={setSortCondition} optionsArray={amountOptions} />
+      <Chart chartData={chartData} valueField={axisSelect} argumentField={CHART_ARGUMENT_FIELD} />
     </GitReposChartWrapper>
   )
 }
