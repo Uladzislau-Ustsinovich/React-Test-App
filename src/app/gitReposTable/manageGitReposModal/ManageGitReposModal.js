@@ -6,6 +6,7 @@ import { addRow, editRow } from '../state/gitReposTable.action'
 import { checkFields, pasteToRow } from '../gitReposTable.helpers'
 import { Button } from '../../../components/button/Button'
 import { COPIED_GIT_REPO } from '../gitReposTable.constants'
+import {ModalErrorMessage} from "../../../components/modal/manageGitReposForm.styled";
 
 const NUMBER_TYPE_FIELDS = ['id', 'forks', 'watchers', 'issues']
 
@@ -17,6 +18,8 @@ export const ManageGitReposModal = ({
 }) => {
   const dispatch = useDispatch()
   const [rowBuffer, setBuffer] = useState({})
+  const [errorMessage, setErrorMessage] = useState('')
+  const [invalidFields, setInvalidFields] = useState([])
 
   useEffect(() => {
     clearFields()
@@ -39,15 +42,25 @@ export const ManageGitReposModal = ({
     setBuffer(prev => ({ ...prev, ...{ _id: '' } }))
   }
 
+  const invalidFieldsHandler = (keysWithProblem) => {
+    setErrorMessage('Please fill fields correctly')
+    setInvalidFields(keysWithProblem)
+    setTimeout(()=> {
+      setErrorMessage('')
+      setInvalidFields([])
+    },3000)
+    console.log(keysWithProblem)
+  }
+
   const submitHandler = () => {
-    if (!checkFields(rowBuffer)) return
+    if (!checkFields(rowBuffer, invalidFieldsHandler)) return
     dispatch(addRow(rowBuffer))
     clearFields()
     closeHandler()
   }
 
   const editHandler = () => {
-    if (!checkFields(rowBuffer)) return
+    if (!checkFields(rowBuffer, invalidFieldsHandler)) return
     dispatch(editRow(rowBuffer))
     closeHandler()
   }
@@ -66,13 +79,15 @@ export const ManageGitReposModal = ({
   return (
     <>
       <Modal closeHandler={closeHandler}>
-        <ManageGitReposForm changeInputHandler={changeInputHandler} rowBuffer={rowBuffer} />
+        <ManageGitReposForm changeInputHandler={changeInputHandler} rowBuffer={rowBuffer} invalidFields={invalidFields} />
 
         {isShowModalForEdit && <Button onClick={editHandler}>Edit</Button>}
         {!isShowModalForEdit && <Button onClick={submitHandler}>Submit</Button>}
         <Button onClick={pasteHandler}>Paste</Button>
         <Button onClick={clearFields}>Clear</Button>
         <Button onClick={closeHandler}>Close</Button>
+        <ModalErrorMessage>{errorMessage}</ModalErrorMessage>
+
       </Modal>
     </>
   )

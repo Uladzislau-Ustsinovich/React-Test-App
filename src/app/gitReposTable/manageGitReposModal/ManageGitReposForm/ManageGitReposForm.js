@@ -4,7 +4,7 @@ import {
   ManageGitReposFormWrapper
 } from '../../../../components/modal/manageGitReposForm.styled'
 
-export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
+export const ManageGitReposForm = ({ changeInputHandler, rowBuffer, invalidFields }) => {
   return (
     <ManageGitReposFormWrapper>
       <ManageGitReposFormCell>
@@ -15,6 +15,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
           name="id"
           value={rowBuffer.id}
           onChange={e => changeInputHandler(e)}
+          style={invalidFields.includes('id') ? { borderColor: 'red' } : { borderColor: '#222831' }}
         />
       </ManageGitReposFormCell>
       <ManageGitReposFormCell>
@@ -25,6 +26,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
           name="name"
           value={rowBuffer.name}
           onChange={e => changeInputHandler(e)}
+          style={invalidFields.includes('name') ? { borderColor: 'red' } : { borderColor: '#222831' }}
         />
       </ManageGitReposFormCell>
       <ManageGitReposFormCell>
@@ -35,6 +37,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
           name="forks"
           value={rowBuffer.forks}
           onChange={e => changeInputHandler(e)}
+          style={invalidFields.includes('forks') ? { borderColor: 'red' } : { borderColor: '#222831' }}
         />
       </ManageGitReposFormCell>
       <ManageGitReposFormCell>
@@ -45,6 +48,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
           name="watchers"
           value={rowBuffer.watchers}
           onChange={e => changeInputHandler(e)}
+          style={invalidFields.includes('watchers') ? { borderColor: 'red' } : { borderColor: '#222831' }}
         />
       </ManageGitReposFormCell>
       <ManageGitReposFormCell>
@@ -55,6 +59,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer }) => {
           name="issues"
           value={rowBuffer.issues}
           onChange={e => changeInputHandler(e)}
+          style={invalidFields.includes('issues') ? { borderColor: 'red' } : { borderColor: '#222831' }}
         />
       </ManageGitReposFormCell>
     </ManageGitReposFormWrapper>

@@ -1,15 +1,17 @@
 const countOfFields = 6
 
-export const checkFields = props => {
+export const checkFields = (inpitFields, invalidFieldsHandler) => {
   let hasProblem = false
-  Object.keys(props).forEach(key => {
-    if (fields[key].validation(props[key])) {
-      alert(`Please fill ${key} field correctly`)
+  let fieldsWithProblems = []
+  Object.keys(inpitFields).forEach(key => {
+    if (fields[key].validation(inpitFields[key])) {
+      fieldsWithProblems = [...fieldsWithProblems, key]
       hasProblem = true
       return false
     }
   })
-  return !(countOfFields !== Object.keys(props).length || hasProblem)
+  invalidFieldsHandler(fieldsWithProblems)
+  return !(countOfFields !== Object.keys(inpitFields).length || hasProblem)
 }
 
 const fields = {
@@ -48,8 +50,6 @@ const fields = {
 const validateString = variable => !variable.trim()
 
 const validateNumber = variable => isNaN(variable) || !variable.toString().trim()
-
-
 
 export const pasteToRow = (setRow, copiedRow) => {
   setRow({

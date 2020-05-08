@@ -24,5 +24,10 @@ export const ManageGitReposFormCell = styled.div`
     border-radius: 3px;
     padding: 5px;
   }
+  transition: all 3s ease-in-out;
+`
+
+export const ModalErrorMessage = styled.h2`
+text-align: center;
 `
 
