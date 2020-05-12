@@ -1,8 +1,6 @@
 import styled from 'styled-components'
 
 export const AppWrapper = styled.div`
-  position: relative;
-
   .fade-appear,
   .fade-enter {
     opacity: 0;
@@ -57,6 +55,7 @@ export const AppWrapper = styled.div`
 `
 
 export const Container = styled.div`
+  position: relative;
   width: 100%;
   height: 100%;
   max-width: 1200px;

@@ -1,18 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Switch, Route, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import { Header } from './app/header/Header'
-import { GitReposChart } from './app/gitReposChart/GitReposChart'
 import { ThemeProvider } from 'styled-components'
 import { lightTheme, darkTheme, DARK_THEME, LIGHT_THEME } from './constants/theme'
 import { GlobalStyles } from './global.styled'
-import { CSSTransition, TransitionGroup } from 'react-transition-group'
-import { ROUTE_PATHS } from './constants/routePaths'
-import { GitReposTable } from './app/gitReposTable/GitReposTable'
 import { Provider } from 'react-redux'
 import { store } from './store/rootReducer'
+import { GitRepos } from './app/gitRepos/GitRepos'
 import { AppWrapper } from './App.styled'
-
-const TRANSITION_TIMEOUT = 1000
 
 export const ThemeContext = React.createContext(null)
 
@@ -46,24 +41,7 @@ const App = () => {
             <GlobalStyles />
             <AppWrapper>
               <Header />
-              <AppWrapper>
-                <Route
-                  render={({ location }) => (
-                    <TransitionGroup>
-                      <CSSTransition
-                        key={location.key}
-                        classNames="fade"
-                        timeout={TRANSITION_TIMEOUT}
-                      >
-                        <Switch location={location}>
-                          <Route exact path={ROUTE_PATHS.table} component={GitReposTable} />
-                          <Route path={ROUTE_PATHS.chart} component={GitReposChart} />
-                        </Switch>
-                      </CSSTransition>
-                    </TransitionGroup>
-                  )}
-                />
-              </AppWrapper>
+              <GitRepos />
             </AppWrapper>
           </ThemeContext.Provider>
         </ThemeProvider>

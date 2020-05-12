@@ -1,9 +1,9 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux'
 import thunk from 'redux-thunk'
-import { gitReposTableReducer } from '../app/gitReposTable/state/gitReposTable.reducer'
+import { gitReposReducer } from '../app/gitRepos/state/gitRepos.reducer'
 
 const rootReducer = combineReducers({
-  gitRepos: gitReposTableReducer
+  gitRepos: gitReposReducer
 })
 
 export const store = createStore(

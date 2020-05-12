@@ -1,11 +1,11 @@
-import { ADD, DELETE, DUBLICATE, EDIT, SET_GIT_REPOS } from './gitReposTable.actionTypes'
+import { ADD, DELETE, DUBLICATE, EDIT, SET_GIT_REPOS } from './gitRepos.actionTypes'
 import { v4 as uuidv4 } from 'uuid'
 
 const initialState = {
   data: []
 }
 
-export const gitReposTableReducer = (state = initialState, action) => {
+export const gitReposReducer = (state = initialState, action) => {
   switch (action.type) {
     case DUBLICATE: {
       const newData = [...state.data]

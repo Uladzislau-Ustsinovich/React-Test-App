@@ -1,4 +1,4 @@
-import { ADD, DELETE, DUBLICATE, EDIT, SET_GIT_REPOS } from './gitReposTable.actionTypes'
+import { ADD, DELETE, DUBLICATE, EDIT, SET_GIT_REPOS } from './gitRepos.actionTypes'
 import { v4 as uuidv4 } from 'uuid'
 import fetcher from '../../../services/fetcher'
 import { API_PATHS } from '../../../constants/apiPaths'
