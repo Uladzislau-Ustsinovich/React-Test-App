@@ -55,3 +55,10 @@ export const AppWrapper = styled.div`
     transition: opacity 150ms linear, transform 150ms ease-in;
   }
 `
+
+export const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+`

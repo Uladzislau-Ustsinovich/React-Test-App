@@ -3,7 +3,7 @@ import { Switch, Route, BrowserRouter } from 'react-router-dom'
 import { Header } from './app/header/Header'
 import { GitReposChart } from './app/gitReposChart/GitReposChart'
 import { ThemeProvider } from 'styled-components'
-import { lightTheme, darkTheme } from './constants/theme'
+import { lightTheme, darkTheme, DARK_THEME, LIGHT_THEME } from './constants/theme'
 import { GlobalStyles } from './global.styled'
 import { CSSTransition, TransitionGroup } from 'react-transition-group'
 import { ROUTE_PATHS } from './constants/routePaths'
@@ -14,30 +14,34 @@ import { AppWrapper } from './App.styled'
 
 const TRANSITION_TIMEOUT = 1000
 
-export const ThemeContext = React.createContext()
+export const ThemeContext = React.createContext(null)
 
 const App = () => {
-  const [theme, setTheme] = useState('light') // Set default theme
+  const [theme, setTheme] = useState(LIGHT_THEME)
 
   useEffect(() => {
-    const localTheme = window.localStorage.getItem('theme')
-    localTheme && setTheme(localTheme)
+    if (
+      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ||
+      window.localStorage.getItem('theme') === DARK_THEME
+    )
+      setTheme(DARK_THEME)
+    else setTheme(LIGHT_THEME)
   }, [])
 
   const changeThemeHandler = () => {
     if (theme === 'light') {
-      window.localStorage.setItem('theme', 'dark')
-      setTheme('dark')
+      window.localStorage.setItem('theme', DARK_THEME)
+      setTheme(DARK_THEME)
     } else {
-      window.localStorage.setItem('theme', 'light')
-      setTheme('light')
+      window.localStorage.setItem('theme', LIGHT_THEME)
+      setTheme(LIGHT_THEME)
     }
   }
 
   return (
     <BrowserRouter>
       <Provider store={store}>
-        <ThemeProvider theme={theme === 'light' ? lightTheme : darkTheme}>
+        <ThemeProvider theme={theme === LIGHT_THEME ? lightTheme : darkTheme}>
           <ThemeContext.Provider value={{ changeThemeHandler }}>
             <GlobalStyles />
             <AppWrapper>
@@ -52,8 +56,8 @@ const App = () => {
                         timeout={TRANSITION_TIMEOUT}
                       >
                         <Switch location={location}>
-                          <Route exact path={ROUTE_PATHS.TABLE} component={GitReposTable} />
-                          <Route path={ROUTE_PATHS.CHART} component={GitReposChart} />
+                          <Route exact path={ROUTE_PATHS.table} component={GitReposTable} />
+                          <Route path={ROUTE_PATHS.chart} component={GitReposChart} />
                         </Switch>
                       </CSSTransition>
                     </TransitionGroup>

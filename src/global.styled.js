@@ -24,16 +24,10 @@ export const GlobalStyles = createGlobalStyle`
     padding: 0;
     transition: all 0.25s linear;
     font-family: 'Baloo Bhaina 2', cursive;
+
     font-size: 15px;
 
   }
-
-    .container {
-      width: 100%;
-      height: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
 
     a {
       text-decoration: none;

@@ -1,3 +1,6 @@
+export const LIGHT_THEME = 'light'
+export const DARK_THEME = 'dark'
+
 export const lightTheme = {
   body: '#ffffff',
   text: '#363537',

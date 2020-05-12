@@ -1,11 +1,15 @@
 import React from 'react'
 import { deleteRows, dublicateRows } from '../state/gitReposTable.action'
 import { useDispatch } from 'react-redux'
-import {Button} from "../../../components/button/Button";
-import {COPIED_GIT_REPO} from "../gitReposTable.constants";
+import { COPIED_GIT_REPOS_STORAGE_KEY } from '../gitReposTable.constants'
+import { Button } from '../../../components/button/Button'
 
-
-export const GitReposTableButtons = ({ selectedFlatRows, setSelectedRow, setShowModal, setShowModalForEdit }) => {
+export const GitReposTableButtons = ({
+  selectedFlatRows,
+  setSelectedRow,
+  setShowModal,
+  setShowModalForEdit
+}) => {
   const dispatch = useDispatch()
 
   const dublicateHandler = () => {
@@ -19,7 +23,7 @@ export const GitReposTableButtons = ({ selectedFlatRows, setSelectedRow, setShow
   }
 
   const copyHandler = () => {
-    localStorage.setItem(COPIED_GIT_REPO, JSON.stringify(selectedFlatRows[0].original))
+    localStorage.setItem(COPIED_GIT_REPOS_STORAGE_KEY, JSON.stringify(selectedFlatRows[0].original))
   }
 
   const addHandler = () => {

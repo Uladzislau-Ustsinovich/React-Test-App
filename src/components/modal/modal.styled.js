@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components'
 
 export const ModalStyled = styled.div`
   display: block; /* Hidden by default */
@@ -10,27 +10,29 @@ export const ModalStyled = styled.div`
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
 `
 
-export const CloseStyled = styled.span`
+export const CloseStyled = styled.button`
+  background: none;
+  border: none;
   color: #aaaaaa;
   float: right;
   font-size: 28px;
   font-weight: bold;
   transition: all 0.2s linear;
 
-&:hover,
-&:focus {
-  color: ${({theme}) => theme.text};
-  text-decoration: none;
-  cursor: pointer;
-}
+  &:hover,
+  &:focus {
+    outline: none;
+    color: ${({ theme }) => theme.text};
+    text-decoration: none;
+    cursor: pointer;
+  }
 `
 
-
 export const ModalContent = styled.div`
-  background-color: ${({theme}) => theme.body};
+  background-color: ${({ theme }) => theme.body};
   border-radius: 10px;
   margin: auto;
   padding: 20px;

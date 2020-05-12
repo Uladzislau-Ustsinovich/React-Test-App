@@ -25,7 +25,7 @@ export const editRow = data => ({
 
 export const fetchMembers = () => dispatch =>
   fetcher
-    .get(API_PATHS.GIT_REPOS)
+    .get(API_PATHS.gitRepos)
     .then(res => {
       const resolvedData = res.map(i => ({
         _id: uuidv4(),

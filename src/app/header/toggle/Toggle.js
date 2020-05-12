@@ -1,15 +1,15 @@
 import React from 'react'
-import { ToggleContainer } from './toggle.styled'
+import { Slider, Switch, ToggleContainer } from './toggle.styled'
 import { ThemeContext } from '../../../App'
 
 export const Toggle = () => (
   <ThemeContext.Consumer>
-    {({changeThemeHandler}) => (
+    {({ changeThemeHandler }) => (
       <ToggleContainer>
-        <label className="switch">
+        <Switch>
           <input type="checkbox" onClick={changeThemeHandler} />
-          <span className="slider round" />
-        </label>
+          <Slider />
+        </Switch>
       </ToggleContainer>
     )}
   </ThemeContext.Consumer>

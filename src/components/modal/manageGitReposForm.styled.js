@@ -28,6 +28,5 @@ export const ManageGitReposFormCell = styled.div`
 `
 
 export const ModalErrorMessage = styled.h2`
-text-align: center;
+  text-align: center;
 `
-

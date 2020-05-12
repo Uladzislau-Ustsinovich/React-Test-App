@@ -7,8 +7,8 @@ import { Loader } from '../../components/loader/Loader'
 import { GitReposChartWrapper } from './gitReposChart.styled'
 import { Select } from '../../components/select/Select'
 import { gitReposDataSelector } from '../gitReposTable/state/gitReposTable.selectors'
-import {CHART_ARGUMENT_FIELD, CHART_VISUALIZATION_TYPE} from './gitReposChart.constants'
-import { sortChartDataByType } from './gitReposChart.helpers'
+import { CHART_ARGUMENT_FIELD, CHART_VISUALIZATION_TYPES } from './gitReposChart.constants'
+import { sortChartData } from './gitReposChart.helpers'
 
 export const GitReposChart = () => {
   const dispatch = useDispatch()
@@ -20,30 +20,17 @@ export const GitReposChart = () => {
 
   const data = useSelector(gitReposDataSelector)
 
-  const optionChangeHandler = useCallback(() => {
-    setChartData(sortChartDataByType(sortCondition, axisSelect, data, topAmount))
-  }, [topAmount, axisSelect, data, sortCondition])
-
   useEffect(() => {
     if (!data.length) {
       setLoading(true)
-      dispatch(fetchMembers()).then(() => setLoading(false))
+      dispatch(fetchMembers()).then(() => setLoading(false)) // setTopAmount don't work here
     }
   }, [data.length, dispatch])
 
   useEffect(() => {
     data.length >= 10 ? setTopAmount(10) : setTopAmount(data.length)
-    optionChangeHandler()
-  }, [data.length, topAmount, axisSelect, sortCondition, optionChangeHandler])
-
-  const axisOptions = React.useMemo(
-    () =>
-      CHART_VISUALIZATION_TYPE.map(i => ({
-        title: i.toUpperCase(),
-        value: i
-      })),
-    []
-  )
+    setChartData(sortChartData(sortCondition, axisSelect, data).slice(0, topAmount))
+  }, [data, topAmount, axisSelect, sortCondition])
 
   const amountOptions = [
     { title: `Top ${topAmount} ascending`, value: 'asc' },
@@ -56,7 +43,7 @@ export const GitReposChart = () => {
 
   return (
     <GitReposChartWrapper>
-      <Select setHandler={setAxisSelect} optionsArray={axisOptions} />
+      <Select setHandler={setAxisSelect} optionsArray={CHART_VISUALIZATION_TYPES} />
       <Select setHandler={setSortCondition} optionsArray={amountOptions} />
       <Chart chartData={chartData} valueField={axisSelect} argumentField={CHART_ARGUMENT_FIELD} />
     </GitReposChartWrapper>

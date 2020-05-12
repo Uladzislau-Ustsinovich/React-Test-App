@@ -1,25 +1,25 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import { Toggle } from './toggle/Toggle'
-import { HeaderContainer, HeaderInner } from './header.styled'
-import {ROUTE_PATHS} from "../../constants/routePaths";
+import { HeaderInner, HeaderWrapper, LinkWrapper, StyledLink } from './header.styled'
+import { ROUTE_PATHS } from '../../constants/routePaths'
+import { Container } from '../../App.styled'
 
 export const Header = () => {
   return (
-    <HeaderContainer>
-      <div className="container">
+    <HeaderWrapper>
+      <Container>
         <HeaderInner>
-          <div className="header__inner_links">
-            <Link to={ROUTE_PATHS.TABLE} className="header__settings_link">
+          <LinkWrapper>
+            <StyledLink to={ROUTE_PATHS.table}>
               <p>Table</p>
-            </Link>
-            <Link to={ROUTE_PATHS.CHART} className="header__settings_link">
+            </StyledLink>
+            <StyledLink to={ROUTE_PATHS.chart}>
               <p>Chart</p>
-            </Link>
-          </div>
+            </StyledLink>
+          </LinkWrapper>
           <Toggle />
         </HeaderInner>
-      </div>
-    </HeaderContainer>
+      </Container>
+    </HeaderWrapper>
   )
 }

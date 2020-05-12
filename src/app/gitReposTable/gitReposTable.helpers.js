@@ -1,55 +1,17 @@
-const countOfFields = 6
+import { TABLE_COLUMNS } from './gitReposTable.constants'
 
-export const checkFields = (inpitFields, invalidFieldsHandler) => {
-  let hasProblem = false
-  let fieldsWithProblems = []
-  Object.keys(inpitFields).forEach(key => {
-    if (fields[key].validation(inpitFields[key])) {
-      fieldsWithProblems = [...fieldsWithProblems, key]
-      hasProblem = true
-      return false
-    }
-  })
-  invalidFieldsHandler(fieldsWithProblems)
-  return !(countOfFields !== Object.keys(inpitFields).length || hasProblem)
+export const checkFields = (inputFields, invalidFieldsHandler) => {
+  const invalidFields = Object.keys(inputFields).reduce((result, key) => {
+    const isInvalid = TABLE_COLUMNS[key].validation(inputFields[key])
+    if (isInvalid) return [...result, key]
+    return result
+  }, [])
+  const isInvalidFieldsFound = !!invalidFields.length
+
+  if (isInvalidFieldsFound) invalidFieldsHandler(invalidFields)
+
+  return isInvalidFieldsFound
 }
-
-const fields = {
-  _id: {
-    validation(variable) {
-      /* ¯\_(ツ)_/¯ */
-    }
-  },
-  id: {
-    validation(variable) {
-      return validateNumber(variable)
-    }
-  },
-  name: {
-    validation(variable) {
-      return validateString(variable)
-    }
-  },
-  forks: {
-    validation(variable) {
-      return validateNumber(variable)
-    }
-  },
-  watchers: {
-    validation(variable) {
-      return validateNumber(variable) || variable < 0
-    }
-  },
-  issues: {
-    validation(variable) {
-      return validateNumber(variable)
-    }
-  }
-}
-
-const validateString = variable => !variable.trim()
-
-const validateNumber = variable => isNaN(variable) || !variable.toString().trim()
 
 export const pasteToRow = (setRow, copiedRow) => {
   setRow({

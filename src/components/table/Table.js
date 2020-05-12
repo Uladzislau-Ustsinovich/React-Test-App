@@ -1,20 +1,10 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useFilters, usePagination, useRowSelect, useSortBy, useTable } from 'react-table'
 import { Pagination, TableWrapper } from './table.styled'
-import { Button } from '../button/Button'
 import { PAGE_ROWS_COUNT } from '../../app/gitReposTable/gitReposTable.constants'
+import { Button } from '../button/Button'
 
 export const Table = ({ columns, data, selectedRowsSetHandler }) => {
-  const [selectedRows, setSelectedRows] = useState([])
-
-  useEffect(() => {
-    selectedRowsSetHandler(selectedFlatRows)
-  }, [selectedRows, selectedRowsSetHandler, selectedFlatRows])
-
-  const checkBoxClickHandler = () => {
-    setSelectedRows(selectedFlatRows)
-  }
-
   const IndeterminateCheckbox = React.forwardRef(({ indeterminate, ...rest }, ref) => {
     const defaultRef = React.useRef()
     const resolvedRef = ref || defaultRef
@@ -79,7 +69,7 @@ export const Table = ({ columns, data, selectedRowsSetHandler }) => {
           Header: ({ getToggleAllRowsSelectedProps }) => (
             <div>
               <IndeterminateCheckbox
-                onClick={checkBoxClickHandler}
+                onClick={selectedRowsSetHandler(selectedFlatRows)}
                 {...getToggleAllRowsSelectedProps()}
               />
             </div>
@@ -87,7 +77,7 @@ export const Table = ({ columns, data, selectedRowsSetHandler }) => {
           Cell: ({ row }) => (
             <div>
               <IndeterminateCheckbox
-                onClick={checkBoxClickHandler}
+                onClick={selectedRowsSetHandler(selectedFlatRows)}
                 {...row.getToggleRowSelectedProps()}
               />
             </div>

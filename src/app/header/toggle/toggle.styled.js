@@ -1,32 +1,17 @@
 import styled from 'styled-components'
 
-export const ToggleContainer = styled.div`
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
-  }
+export const Slider = styled.span`
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: ${({ theme }) => theme.toggleBackground};
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: ${({ theme }) => theme.toggleBackground};
-    -webkit-transition: 0.4s;
-    transition: 0.4s;
-  }
-
-  .slider:before {
+  &:before {
     position: absolute;
     content: '';
     height: 26px;
@@ -36,24 +21,32 @@ export const ToggleContainer = styled.div`
     background-color: ${({ theme }) => theme.toggleBorder};
     -webkit-transition: 0.4s;
     transition: 0.4s;
+    border-radius: 50%;
   }
+  border-radius: 34px;
+`
 
-  input:focus + .slider {
+export const ToggleContainer = styled.div`
+  input:focus + Slider {
     box-shadow: 0 0 1px #2196f3;
   }
 
-  input:checked + .slider:before {
+  input:checked + span:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
   }
+`
 
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
+export const Switch = styled.label`
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
 
-  .slider.round:before {
-    border-radius: 50%;
+  & input {
+    opacity: 0;
+    width: 0;
+    height: 0;
   }
 `

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components'
 
 export const TableWrapper = styled.div`
   max-width: 1200px;
@@ -30,7 +30,7 @@ export const TableWrapper = styled.div`
       }
     }
   }
-`;
+`
 
 export const Pagination = styled.div`
   text-align: center;
@@ -38,4 +38,4 @@ export const Pagination = styled.div`
     font-size: 25px;
     padding: 0 20px;
   }
-`;
+`
