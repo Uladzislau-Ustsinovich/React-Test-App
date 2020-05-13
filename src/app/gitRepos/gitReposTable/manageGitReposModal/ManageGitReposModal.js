@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { ManageGitReposForm } from './ManageGitReposForm/ManageGitReposForm'
-import { Modal } from '../../../components/modal/Modal'
-import { addRow, editRow } from '../../gitRepos/state/gitRepos.action'
+import { Modal } from '../../../../components/modal/Modal'
+import { addRow, editRow } from '../../state/gitRepos.action'
 import { checkFields, pasteToRow } from '../gitReposTable.helpers'
 import {
   COPIED_GIT_REPOS_STORAGE_KEY,
@@ -10,9 +10,9 @@ import {
   MODAL_ERROR_MESSAGE,
   TABLE_COLUMNS
 } from '../gitReposTable.constants'
-import { ModalErrorMessage } from '../../../components/modal/manageGitReposForm.styled'
-import { NUMBER_TYPE_OF_COLUMN } from '../../../constants/typesOfColumns'
-import { Button } from '../../../components/button/Button'
+import { ModalErrorMessage } from '../../../../components/modal/manageGitReposForm.styled'
+import { NUMBER_TYPE_OF_COLUMN } from '../../../../constants/typesOfColumns'
+import { Button } from '../../../../components/button/Button'
 
 export const ManageGitReposModal = ({
   selectedRow,

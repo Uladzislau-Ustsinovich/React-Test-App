@@ -2,7 +2,7 @@ import React from 'react'
 import {
   ManageGitReposFormCell,
   ManageGitReposFormWrapper
-} from '../../../../components/modal/manageGitReposForm.styled'
+} from '../../../../../components/modal/manageGitReposForm.styled'
 import { TABLE_COLUMNS } from '../../gitReposTable.constants'
 
 export const ManageGitReposForm = ({ changeInputHandler, rowBuffer, invalidFields }) => {

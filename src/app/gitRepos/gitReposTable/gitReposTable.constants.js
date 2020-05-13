@@ -1,4 +1,4 @@
-import { NUMBER_TYPE_OF_COLUMN, STRING_TYPE_OF_COLUMN } from '../../constants/typesOfColumns'
+import { NUMBER_TYPE_OF_COLUMN, STRING_TYPE_OF_COLUMN } from '../../../constants/typesOfColumns'
 
 export const PAGE_ROWS_COUNT = 7
 export const COPIED_GIT_REPOS_STORAGE_KEY = 'copiedGitRepo'

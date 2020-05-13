@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Table } from '../../components/table/Table'
+import { Table } from '../../../components/table/Table'
 import { GitReposTableButtons } from './tableButtons/GitReposTableButtons'
 import { COLUMN_TITLES } from './gitReposTable.constants'
 import { useSelector } from 'react-redux'
 import { GitReposTableWrapper } from './gitReposTable.styled'
 import { ManageGitReposModal } from './manageGitReposModal/ManageGitReposModal'
-import { gitReposDataSelector } from '../gitRepos/state/gitRepos.selectors'
+import { gitReposDataSelector } from '../state/gitRepos.selectors'
 
 export const GitReposTable = () => {
   const [selectedRows, setSelectedRows] = useState([])

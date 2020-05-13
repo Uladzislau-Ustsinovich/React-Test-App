@@ -1,8 +1,8 @@
 import React from 'react'
-import { deleteRows, dublicateRows } from '../../gitRepos/state/gitRepos.action'
+import { deleteRows, dublicateRows } from '../../state/gitRepos.action'
 import { useDispatch } from 'react-redux'
 import { COPIED_GIT_REPOS_STORAGE_KEY } from '../gitReposTable.constants'
-import { Button } from '../../../components/button/Button'
+import { Button } from '../../../../components/button/Button'
 
 export const GitReposTableButtons = ({
   selectedFlatRows,

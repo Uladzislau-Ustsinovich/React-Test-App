@@ -1,7 +1,7 @@
 import React from 'react'
 import { useFilters, usePagination, useRowSelect, useSortBy, useTable } from 'react-table'
 import { Pagination, TableWrapper } from './table.styled'
-import { PAGE_ROWS_COUNT } from '../../app/gitReposTable/gitReposTable.constants'
+import { PAGE_ROWS_COUNT } from '../../app/gitRepos/gitReposTable/gitReposTable.constants'
 import { Button } from '../button/Button'
 
 export const Table = ({ columns, data, selectedRowsSetHandler }) => {
