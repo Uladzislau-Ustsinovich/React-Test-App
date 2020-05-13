@@ -9,28 +9,26 @@ import { gitReposDataSelector } from '../state/gitRepos.selectors'
 
 export const GitReposTable = () => {
   const [selectedRows, setSelectedRows] = useState([])
-  const [selectedRowForEdit, setSelectedRowForEdit] = useState({})
-  const [isShowModal, setShowModal] = useState(false)
-  const [isShowModalForEdit, setShowModalForEdit] = useState(false)
+  const [isModalOpened, setModalOpen] = useState(false)
+  const [isModalOpenedForEdit, setModalOpenForEdit] = useState(false)
   const data = useSelector(gitReposDataSelector)
 
   return (
     <GitReposTableWrapper>
       <GitReposTableButtons
         selectedFlatRows={selectedRows}
-        setSelectedRow={setSelectedRowForEdit}
-        setShowModal={setShowModal}
-        setShowModalForEdit={setShowModalForEdit}
+        setShowModal={setModalOpen}
+        setShowModalForEdit={setModalOpenForEdit}
       />
 
       <Table columns={COLUMN_TITLES} data={data} selectedRowsSetHandler={setSelectedRows} />
 
-      {isShowModal && (
+      {isModalOpened && (
         <ManageGitReposModal
-          selectedRow={selectedRowForEdit}
-          setShowModal={setShowModal}
-          setShowModalForEdit={setShowModalForEdit}
-          isShowModalForEdit={isShowModalForEdit}
+          selectedRows={selectedRows}
+          setShowModal={setModalOpen}
+          setShowModalForEdit={setModalOpenForEdit}
+          isShowModalForEdit={isModalOpenedForEdit}
         />
       )}
     </GitReposTableWrapper>

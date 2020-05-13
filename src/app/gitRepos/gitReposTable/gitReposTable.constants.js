@@ -1,4 +1,6 @@
-import { NUMBER_TYPE_OF_COLUMN, STRING_TYPE_OF_COLUMN } from '../../../constants/typesOfColumns'
+export const NUMBER_TYPE_OF_COLUMN = 'number'
+export const STRING_TYPE_OF_COLUMN = 'string'
+export const READ_ONLY_TYPE_OF_COLUMN = 'readOnly'
 
 export const PAGE_ROWS_COUNT = 7
 export const COPIED_GIT_REPOS_STORAGE_KEY = 'copiedGitRepo'
@@ -11,6 +13,7 @@ export const TABLE_COLUMNS = {
   _id: {
     Header: '_Id',
     accessor: '_id',
+    type: READ_ONLY_TYPE_OF_COLUMN,
     validation() {
       return false
     }

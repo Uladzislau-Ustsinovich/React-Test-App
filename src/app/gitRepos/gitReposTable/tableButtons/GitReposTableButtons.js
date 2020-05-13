@@ -4,12 +4,7 @@ import { useDispatch } from 'react-redux'
 import { COPIED_GIT_REPOS_STORAGE_KEY } from '../gitReposTable.constants'
 import { Button } from '../../../../components/button/Button'
 
-export const GitReposTableButtons = ({
-  selectedFlatRows,
-  setSelectedRow,
-  setShowModal,
-  setShowModalForEdit
-}) => {
+export const GitReposTableButtons = ({ selectedFlatRows, setShowModal, setShowModalForEdit }) => {
   const dispatch = useDispatch()
 
   const dublicateHandler = () => {
@@ -34,7 +29,6 @@ export const GitReposTableButtons = ({
   const editHandler = () => {
     setShowModal(true)
     setShowModalForEdit(true)
-    setSelectedRow(selectedFlatRows[0].original)
   }
 
   return (

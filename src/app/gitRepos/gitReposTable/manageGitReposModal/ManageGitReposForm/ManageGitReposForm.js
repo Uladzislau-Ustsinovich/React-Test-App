@@ -3,11 +3,11 @@ import {
   ManageGitReposFormCell,
   ManageGitReposFormWrapper
 } from '../../../../../components/modal/manageGitReposForm.styled'
-import { TABLE_COLUMNS } from '../../gitReposTable.constants'
+import { READ_ONLY_TYPE_OF_COLUMN, TABLE_COLUMNS } from '../../gitReposTable.constants'
 
 export const ManageGitReposForm = ({ changeInputHandler, rowBuffer, invalidFields }) => {
   const Cells = Object.keys(TABLE_COLUMNS).map(key => {
-    if (key !== '_id')
+    if (TABLE_COLUMNS[key].type !== READ_ONLY_TYPE_OF_COLUMN)
       return (
         <ManageGitReposFormCell>
           <p>{TABLE_COLUMNS[key].Header}</p>

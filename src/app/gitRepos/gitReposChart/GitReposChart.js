@@ -1,13 +1,15 @@
 import * as React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState, useCallback } from 'react'
-import { fetchMembers } from '../state/gitRepos.action'
 import { Chart } from '../../../components/chart/Chart'
-import { Loader } from '../../../components/loader/Loader'
 import { GitReposChartWrapper } from './gitReposChart.styled'
 import { Select } from '../../../components/select/Select'
 import { gitReposDataSelector } from '../state/gitRepos.selectors'
-import { CHART_ARGUMENT_FIELD, CHART_VISUALIZATION_TYPES } from './gitReposChart.constants'
+import {
+  CHART_ARGUMENT_FIELD,
+  CHART_VISUALIZATION_TYPES,
+  MAX_TOP_REPOS_COUNT
+} from './gitReposChart.constants'
 import { sortChartData } from './gitReposChart.helpers'
 
 export const GitReposChart = () => {
@@ -19,8 +21,17 @@ export const GitReposChart = () => {
   const data = useSelector(gitReposDataSelector)
 
   useEffect(() => {
-    data.length >= 10 ? setTopAmount(10) : setTopAmount(data.length)
-    setChartData(sortChartData(sortCondition, axisSelect, data).slice(0, topAmount))
+    const _topAmount = data.length >= MAX_TOP_REPOS_COUNT ? MAX_TOP_REPOS_COUNT : data.length
+
+    setTopAmount(_topAmount)
+  })
+
+  useEffect(() => {
+    if (!topAmount) return
+
+    const _chartData = sortChartData(sortCondition, axisSelect, data).slice(0, topAmount)
+
+    setChartData(_chartData)
   }, [data, topAmount, axisSelect, sortCondition])
 
   const amountOptions = [

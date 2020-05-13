@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { ManageGitReposForm } from './ManageGitReposForm/ManageGitReposForm'
 import { Modal } from '../../../../components/modal/Modal'
@@ -8,14 +8,14 @@ import {
   COPIED_GIT_REPOS_STORAGE_KEY,
   INITIAL_ROW,
   MODAL_ERROR_MESSAGE,
+  NUMBER_TYPE_OF_COLUMN,
   TABLE_COLUMNS
 } from '../gitReposTable.constants'
 import { ModalErrorMessage } from '../../../../components/modal/manageGitReposForm.styled'
-import { NUMBER_TYPE_OF_COLUMN } from '../../../../constants/typesOfColumns'
 import { Button } from '../../../../components/button/Button'
 
 export const ManageGitReposModal = ({
-  selectedRow,
+  selectedRows,
   setShowModal,
   setShowModalForEdit,
   isShowModalForEdit
@@ -26,25 +26,26 @@ export const ManageGitReposModal = ({
   const [invalidFields, setInvalidFields] = useState([])
 
   useEffect(() => {
-    clearFields()
-    if (selectedRow && isShowModalForEdit) {
-      pasteToRow(setRowBuffer, selectedRow)
-    }
-  }, [isShowModalForEdit, clearFields, selectedRow])
+    const selectedEditRow = selectedRows[0].original
 
-  const clearFields = () => {
+    clearFields()
+
+    if (isShowModalForEdit) pasteToRow(setRowBuffer, selectedEditRow)
+  }, [isShowModalForEdit, clearFields, selectedRows])
+
+  const clearFields = useCallback(() => {
     Object.keys(rowBuffer).forEach(key => setRowBuffer(prev => ({ ...prev, [key]: '' })))
     setRowBuffer(prev => ({ ...prev, _id: '' }))
-  }
+  })
 
   const invalidFieldsHandler = keysWithProblem => {
     setErrorMessage(MODAL_ERROR_MESSAGE)
     setInvalidFields(keysWithProblem)
+
     setTimeout(() => {
       setErrorMessage('')
       setInvalidFields([])
     }, 3000)
-    console.log(keysWithProblem)
   }
 
   const changeInputHandler = event => {
@@ -81,6 +82,7 @@ export const ManageGitReposModal = ({
 
   const closeHandler = () => {
     clearFields()
+
     setShowModal(false)
     setShowModalForEdit(false)
   }

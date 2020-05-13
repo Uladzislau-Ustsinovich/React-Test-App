@@ -20,7 +20,7 @@ export const GitRepos = () => {
   useEffect(() => {
     if (!data.length) {
       setLoading(true)
-      dispatch(fetchMembers()).then(() => setLoading(false))
+      dispatch(fetchMembers()).finally(() => setLoading(false))
     }
   }, [data.length, dispatch])
 

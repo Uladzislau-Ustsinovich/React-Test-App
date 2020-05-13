@@ -13,3 +13,4 @@ export const CHART_VISUALIZATION_TYPES = [
   }
 ]
 export const CHART_ARGUMENT_FIELD = 'name'
+export const MAX_TOP_REPOS_COUNT = 10
