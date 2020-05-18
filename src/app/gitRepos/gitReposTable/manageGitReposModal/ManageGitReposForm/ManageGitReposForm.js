@@ -9,7 +9,7 @@ export const ManageGitReposForm = ({ changeInputHandler, rowBuffer, invalidField
   const Cells = Object.keys(TABLE_COLUMNS).map(key => {
     if (TABLE_COLUMNS[key].type !== READ_ONLY_TYPE_OF_COLUMN)
       return (
-        <ManageGitReposFormCell>
+        <ManageGitReposFormCell key={TABLE_COLUMNS[key].Header}>
           <p>{TABLE_COLUMNS[key].Header}</p>
           <input
             type={TABLE_COLUMNS[key].type}

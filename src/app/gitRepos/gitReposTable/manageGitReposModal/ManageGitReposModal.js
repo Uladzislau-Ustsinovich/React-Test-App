@@ -13,6 +13,7 @@ import {
 } from '../gitReposTable.constants'
 import { ModalErrorMessage } from '../../../../components/modal/manageGitReposForm.styled'
 import { Button } from '../../../../components/button/Button'
+import { v4 as uuidv4 } from 'uuid'
 
 export const ManageGitReposModal = ({
   selectedRows,
@@ -26,11 +27,9 @@ export const ManageGitReposModal = ({
   const [invalidFields, setInvalidFields] = useState([])
 
   useEffect(() => {
-    const selectedEditRow = selectedRows[0].original
-
     clearFields()
 
-    if (isShowModalForEdit) pasteToRow(setRowBuffer, selectedEditRow)
+    if (isShowModalForEdit) pasteToRow(setRowBuffer, selectedRows[0].original)
   }, [isShowModalForEdit, clearFields, selectedRows])
 
   const clearFields = useCallback(() => {
@@ -73,9 +72,10 @@ export const ManageGitReposModal = ({
   }
 
   const pasteHandler = () => {
+    const editId = selectedRows.length ? selectedRows[0].original._id : uuidv4()
     const obj = {
       ...JSON.parse(localStorage.getItem(COPIED_GIT_REPOS_STORAGE_KEY)),
-      _id: selectedRow._id
+      _id: editId
     }
     pasteToRow(setRowBuffer, obj)
   }
